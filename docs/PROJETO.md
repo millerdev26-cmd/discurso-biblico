@@ -62,8 +62,8 @@ específico da Apple fica no app, atrás de protocolos do núcleo
 
 | Caminho | Conteúdo |
 | --- | --- |
-| `Tests/DiscursoCoreTests/` | 169 testes do núcleo + `Fixtures/` (EPUB, DEFLATE, WOL, biblioteca) |
-| `App/DiscursoBiblicoTests/` | 86 testes do app (59 rodam em Linux; 27 exigem Apple) |
+| `Tests/DiscursoCoreTests/` | 181 testes do núcleo + `Fixtures/` (EPUB, DEFLATE, WOL, biblioteca) |
+| `App/DiscursoBiblicoTests/` | 87 testes do app (60 rodam em Linux; 27 exigem Apple) |
 | `App/DiscursoBiblicoUITests/` | 2 testes de interface (XCUITest) que percorrem as telas e guardam 12 capturas de tela |
 | `App/Package.swift`, `App/xtool.yml`, `App/Info-xtool.plist` | Manifesto/configuração para compilar e instalar sem Mac pelo xtool (caminho opcional; ver `App/README.md`, seção 3d) |
 | `Scripts/make_fixtures.py` | Gera as fixtures sintéticas |
@@ -144,20 +144,21 @@ restaurar ──► BackupCoordinator.inspect (resumo, sem tocar nos dados)
 | Arquivos da biblioteca | `LibraryFileStoreTests` | Linux | 8 |
 | Importação no app (lote, duplicados, DRM, avisos) | `LibraryImportServiceTests` | Linux | 17 |
 | Backup no app (exportar, inspecionar, restaurar) | `BackupCoordinatorTests` | Linux | 9 |
-| Conteúdo de exemplo dos testes de interface | `DemoSeedTests` | Qualquer | 5 |
+| Conteúdo de exemplo dos testes de interface | `DemoSeedTests` | Qualquer | 6 |
+| Leitura de Markdown (títulos, listas, citação, código) | `MarkdownBlocksTests` | Linux | 12 |
 | Registros SwiftData (CRUD, pastas, índices, perfis, histórico) | `SwiftDataRepositoriesTests` | Apple (simulador, CI) | 10 |
 | Texto do proferimento (faixas, marcações, links, temas) | `PresentationTextBuilderTests` | Apple (simulador, CI) | 12 |
 | Extração de PDF com PDFKit | `PDFKitTextExtractingTests` | Apple (simulador, CI) | 5 |
 | Telas percorridas de ponta a ponta + capturas de tela | `DiscursoBiblicoUITests` | Apple (simulador, CI) | 2 testes / 12 capturas |
 | Sintaxe de todos os arquivos do app | `parse_check_app.sh` | Qualquer | 53 arquivos |
 | Geração do projeto Xcode | `xcodegen generate` (XcodeGen 2.46) | Linux/macOS | 1 projeto |
-| Aplicativo iOS: compilação + 86 testes no simulador | `xcodebuild` (CI) | macOS (GitHub Actions) | 1 job |
+| Aplicativo iOS: compilação + 87 testes de unidade e 2 de interface | `xcodebuild` (CI) | macOS (GitHub Actions) | 1 job |
 
 Comandos:
 
 ```bash
-swift test                     # 169 testes do núcleo
-Scripts/verify_app_logic.sh    # 59 testes do app em Linux
+swift test                     # 181 testes do núcleo
+Scripts/verify_app_logic.sh    # 60 testes do app em Linux
 Scripts/parse_check_app.sh     # sintaxe
 # no macOS: xcodebuild test …  # + 27 testes e o app inteiro
 # sem Mac: .github/workflows/ios.yml roda o xcodebuild test acima

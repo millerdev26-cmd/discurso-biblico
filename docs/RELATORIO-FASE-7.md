@@ -79,23 +79,36 @@ deles é usado pelo CI. A ressalva honesta está na seção 3d do
    num toque de dedo o conflito de gestos é o mesmo, e o usuário sentiria
    “toco no discurso e não abre”.
 
+3. **O leitor de Markdown mostrava o arquivo cru.** Este só apareceu ao
+   **olhar** a captura da biblioteca: no material de exemplo a tela exibia
+   “# Anotações de estudo”, “## Esperança que se apoia em promessas”,
+   “- João 3:16 — …” e “1. Abra o material na Biblioteca.” — a marcação
+   Markdown literal. A indexação já removia a marcação
+   (`MarkdownPlainText`), mas a tela não: o texto chegava cru ao leitor.
+   Correção: `MarkdownBlocks` no núcleo quebra o arquivo em blocos (título,
+   parágrafo, item de lista com número, citação, código, linha horizontal)
+   **sem perder nenhum texto**, e o leitor renderiza cada bloco com estilo
+   próprio e respeitando o tamanho de fonte escolhido. `stripInline` passou
+   a ser público e é reutilizado, para o texto indexado e o exibido nunca
+   divergirem. 12 testes novos no núcleo, rodando em Linux.
+
 ## Mudanças de verificação
 
 | Antes | Agora |
 | --- | --- |
-| `swift test` — 168 | **169** (um teste novo de normalização de referência) |
-| `Scripts/verify_app_logic.sh` — 54, 6 arquivos do app | **59**, 7 arquivos (`DemoSeed` entrou) |
+| `swift test` — 168 | **181** (normalização de referência + leitura de Markdown) |
+| `Scripts/verify_app_logic.sh` — 54, 6 arquivos do app | **60**, 7 arquivos (`DemoSeed` entrou) |
 | `Scripts/parse_check_app.sh` — 49 arquivos | **53** (entrou também `DiscursoBiblicoUITests/`) |
-| `xcodebuild test` no CI — 81 | **86 de unidade + 2 de interface**, com 12 capturas de tela |
+| `xcodebuild test` no CI — 81 | **87 de unidade + 2 de interface**, com 12 capturas de tela |
 
 ## Resultado da verificação
 
 | Comando | Resultado |
 | --- | --- |
-| `swift test` | **169 testes, 0 falhas** |
-| `Scripts/verify_app_logic.sh` | **59 testes, 0 falhas** |
+| `swift test` | **181 testes, 0 falhas** |
+| `Scripts/verify_app_logic.sh` | **60 testes, 0 falhas** |
 | `Scripts/parse_check_app.sh` | **53 arquivos, 0 erros de sintaxe** |
-| `xcodebuild test` (runner macOS, simulador iPhone 16) | **86 testes de unidade + 2 de interface**, capturas no artefato `capturas-simulador` |
+| `xcodebuild test` (runner macOS, simulador iPhone 16) | **87 testes de unidade + 2 de interface**, capturas no artefato `capturas-simulador` |
 
 Duas rodadas depois da correção, o CI também passou a escolher o **Xcode 26.x**
 do runner (mesma geração do simulador) e os testes de interface ganharam toques

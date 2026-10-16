@@ -484,3 +484,29 @@ As três estratégias de toque ficam como cinto de segurança: no iOS 26 há
 relatos de toques que "não fazem nada" e de abas que raramente respondem. Com o
 gesto removido o toque normal funciona; as outras duas só entram se o primeiro
 não surtir efeito, e o log do CI diz qual foi usada.
+
+## 25. Leitura de Markdown no núcleo (`MarkdownBlocks`)
+
+**Decisão.** O arquivo Markdown é interpretado em **blocos** (`MarkdownBlocks`,
+no núcleo: título, parágrafo, item de lista com marcador ou número, citação,
+código e linha horizontal) e o leitor desenha cada bloco com estilo próprio. A
+limpeza da marcação embutida (ênfase, links, imagens, código) passou a ser a
+**mesma** função usada na indexação (`MarkdownPlainText.stripInline`, agora
+pública), para o texto indexado e o exibido nunca divergirem.
+
+**Por quê.** O defeito só apareceu ao **olhar** a captura de tela da biblioteca
+no CI: a tela mostrava `# Anotações de estudo` e `- João 3:16` literalmente. A
+indexação já removia a marcação, então o conteúdo estava certo e só a
+apresentação estava errada — exatamente o defeito que nenhum teste de lógica
+pegaria e que a captura pegou. Interpretar no núcleo (e não no SwiftUI) deixa o
+comportamento testável em Linux, onde a maioria das suítes roda.
+
+**Limite declarado.** É um subconjunto pequeno do Markdown (títulos, listas,
+citações, cercas de código, ênfase e links) — o suficiente para anotações de
+estudo e textos deBring. O que não for reconhecido **vira parágrafo**: nada
+some da tela. Indentação, tabelas e HTML embutido não são interpretados
+(continuam texto).
+
+**Regra que vale.** Nunca descartar texto que não se sabe interpretar: uma
+linha desconhecida vira parágrafo e uma cerca de código sem fechamento mostra o
+que houve.

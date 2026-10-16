@@ -85,10 +85,10 @@ com marcações, referências bíblicas, notas e indicações, além de um mater
 Markdown indexado na biblioteca. No uso normal nada é criado sozinho.
 
 **Resultado neste repositório** (`millerdev26-cmd/discurso-biblico`, isolado,
-`Actions ▸ iOS`): aplicativo compilado e **86 testes de unidade + 2 de
+`Actions ▸ iOS`): aplicativo compilado e **87 testes de unidade + 2 de
 interface** verdes no simulador (iPhone 16, iOS 26.2), com as **12 capturas de
 tela** publicadas no artefato `capturas-simulador` (execução 38921600296);
-núcleo com **169 testes** em Linux e macOS e **59 testes** da lógica do app
+núcleo com **181 testes** em Linux e macOS e **60 testes** da lógica do app
 rodando em Linux (`Scripts/verify_app_logic.sh`). A primeira compilação real
 encontrou 16 defeitos que a análise sintática não via — inclusive dois de
 lógica —, todos listados na decisão 17 de
@@ -222,12 +222,12 @@ Os testes se dividem em quatro grupos:
 
 | Grupo | Arquivos | Plataforma |
 | --- | --- | --- |
-| Lógica pura (também roda em Linux pelo `Scripts/verify_app_logic.sh`) | `PayloadCodingTests` (9), `BibleReferenceLinkTests` (11), `LibraryFileStoreTests` (8), `LibraryImportServiceTests` (17), `BackupCoordinatorTests` (9), `DemoSeedTests` (5) | Qualquer |
+| Lógica pura (também roda em Linux pelo `Scripts/verify_app_logic.sh`) | `PayloadCodingTests` (9), `BibleReferenceLinkTests` (11), `LibraryFileStoreTests` (8), `LibraryImportServiceTests` (17), `BackupCoordinatorTests` (9), `DemoSeedTests` (6) | Qualquer |
 | Persistência | `SwiftDataRepositoriesTests` (10 testes) | iOS/macOS |
 | UIKit/PDFKit | `PresentationTextBuilderTests` (12), `PDFKitTextExtractingTests` (5) | iOS/macOS |
 | Interface (XCUITest, gera capturas de tela) | `DiscursoBiblicoUITests` (2 testes, 12 capturas) | iOS/simulador |
 
-São **86 testes de unidade** (59 deles rodam em Linux) e 2 de interface. Os
+São **87 testes de unidade** (60 deles rodam em Linux) e 2 de interface. Os
 arquivos dos dois grupos do meio começam com `#if canImport(SwiftData)` /
 `#if canImport(UIKit)` / `#if canImport(PDFKit)`: fora da Apple eles compilam
 vazios e não quebram o script de verificação. `DemoSeedTests` acompanha o
