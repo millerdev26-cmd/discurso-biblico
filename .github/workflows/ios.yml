@@ -1,0 +1,88 @@
+# Compilação e testes do aplicativo iOS na nuvem.
+#
+# O Xcode só existe no macOS. Este workflow roda num runner macOS do GitHub
+# Actions, gera o projeto com o XcodeGen e executa TODOS os testes do app
+# (inclusive os 27 que dependem de SwiftData/UIKit/PDFKit e que não rodam em
+# Linux), além do núcleo em Linux e no macOS.
+#
+# Requisitos: repositório no GitHub. Runners macOS são gratuitos para
+# repositórios públicos; em repositórios privados contam no limite do plano
+# (minutos de macOS valem 10x no plano Free).
+#
+# Disparo: push nas branches abaixo, pull request ou manualmente em
+# Actions ▸ iOS ▸ Run workflow.
+
+name: iOS
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  nucleo-linux:
+    name: Núcleo (SwiftPM, Linux)
+    runs-on: ubuntu-latest
+    container: swift:6.2
+    steps:
+      - uses: actions/checkout@v4
+      - name: Testes do DiscursoCore
+        run: swift test
+
+  app-ios:
+    name: App iOS (simulador)
+    runs-on: macos-15
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Versões
+        run: |
+          xcodebuild -version
+          swift --version
+          xcrun simctl list devices available | grep -i iphone | head -n 5
+
+      - name: Instalar o XcodeGen
+        run: brew install xcodegen
+
+      - name: Gerar o projeto Xcode
+        working-directory: App
+        run: xcodegen generate
+
+      - name: Compilar para testes
+        working-directory: App
+        run: |
+          xcodebuild build-for-testing \
+            -project DiscursoBiblico.xcodeproj \
+            -scheme DiscursoBiblico \
+            -destination 'platform=iOS Simulator,name=iPhone 16' \
+            -derivedDataPath .ci/DerivedData \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Testes do aplicativo no simulador
+        working-directory: App
+        run: |
+          xcodebuild test-without-building \
+            -project DiscursoBiblico.xcodeproj \
+            -scheme DiscursoBiblico \
+            -destination 'platform=iOS Simulator,name=iPhone 16' \
+            -derivedDataPath .ci/DerivedData \
+            -resultBundlePath .ci/TestResults.xcresult \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Testes do núcleo no macOS
+        run: swift test
+
+      - name: Guardar o resultado dos testes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: xcresult
+          path: App/.ci/TestResults.xcresult
+          if-no-files-found: ignore
+          retention-days: 14

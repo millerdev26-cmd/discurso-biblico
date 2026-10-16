@@ -1,0 +1,85 @@
+# Especificação do projeto Xcode (gerado com XcodeGen).
+#
+# Uso (macOS, com XcodeGen instalado via Homebrew):
+#
+#     cd App
+#     xcodegen generate
+#     open DiscursoBiblico.xcodeproj
+#
+# O pacote Swift local `DiscursoCore` fica na raiz do repositório e contém
+# toda a lógica de negócio testada (modelos, persistência em arquivo, EPUB,
+# importação/exportação, pesquisa, Bíblia, rolagem automática).
+#
+# Sem o XcodeGen também é possível criar o projeto manualmente no Xcode:
+#   1. File > New > Project > iOS App (SwiftUI, Swift, sem Core Data);
+#   2. adicione a pasta `DiscursoBiblico` como grupo (referência de pasta);
+#   3. File > Add Package Dependencies... > Add Local... > selecione a raiz
+#      deste repositório (produto `DiscursoCore`);
+#   4. informe `DiscursoBiblico/Info.plist` em INFOPLIST_FILE ou copie as
+#      chaves do arquivo para as configurações de Info do alvo.
+
+name: DiscursoBiblico
+
+options:
+  bundleIdPrefix: br.org.discursobiblico
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+
+packages:
+  DiscursoCore:
+    path: ..
+
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    IPHONEOS_DEPLOYMENT_TARGET: "17.0"
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+    SWIFT_COMPILATION_MODE: wholemodule
+
+targets:
+  DiscursoBiblico:
+    type: application
+    platform: iOS
+    sources:
+      - path: DiscursoBiblico
+    dependencies:
+      - package: DiscursoCore
+        product: DiscursoCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: br.org.discursobiblico.app
+        PRODUCT_NAME: Discurso Biblico
+        INFOPLIST_FILE: DiscursoBiblico/Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+        TARGETED_DEVICE_FAMILY: "1,2"
+        ENABLE_PREVIEWS: YES
+        DEVELOPMENT_ASSET_PATHS: ""
+        CODE_SIGN_STYLE: Automatic
+
+  DiscursoBiblicoTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: DiscursoBiblicoTests
+    dependencies:
+      - target: DiscursoBiblico
+      - package: DiscursoCore
+        product: DiscursoCore
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: br.org.discursobiblico.tests
+
+schemes:
+  DiscursoBiblico:
+    build:
+      targets:
+        DiscursoBiblico: all
+        DiscursoBiblicoTests: [test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - DiscursoBiblicoTests

@@ -1,0 +1,21 @@
+# macOS
+.DS_Store
+
+# SwiftPM (raiz do pacote e App)
+.build/
+.swiftpm/
+
+# Xcode / derivados de build
+DerivedData/
+*.xcresult
+*.xcuserstate
+xcuserdata/
+App/.ci/
+
+# Python (Scripts/make_fixtures.py)
+__pycache__/
+*.pyc
+
+# Editores
+.vscode/
+.idea/

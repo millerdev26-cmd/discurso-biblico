@@ -1,0 +1,723 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		02B57107E7F465A347FFB218 /* SwiftDataRepositoriesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5613EDE11198316CDA78DD72 /* SwiftDataRepositoriesTests.swift */; };
+		06EA2CC23575A5FF267B7BDA /* LibraryFileStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D435027B5E353D846A996706 /* LibraryFileStore.swift */; };
+		0900A6E8CC7D7612F5A9D235 /* BackupCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A845025504BCADA40517A /* BackupCoordinatorTests.swift */; };
+		0998F2DEC088C7391F942017 /* AppTestSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B226520FC37F404150875A /* AppTestSupport.swift */; };
+		109D4F99345E19114F214F75 /* PDFKitTextExtractingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A696A2310CF7E9A28255A876 /* PDFKitTextExtractingTests.swift */; };
+		1FB481C53A77435FF2774FB6 /* PresentationTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B016AF9D5FE8DD0544881C94 /* PresentationTextView.swift */; };
+		21B1ADCE6904EC330B37F7A9 /* BibleReferenceLinkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CA62B25C64AA992D19AB908 /* BibleReferenceLinkTests.swift */; };
+		270FF85CD79430D4CBD64350 /* BibleReferenceLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EC4CA36C328243698FFBF6 /* BibleReferenceLink.swift */; };
+		305337B3C06A30ECE862C755 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687E9E4C70EBC80295CA222D /* SettingsViewModel.swift */; };
+		34BFA351489D63A5E8464F9F /* BiblePassagePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5891BA9D5FBCDE5D3BA6C2 /* BiblePassagePanel.swift */; };
+		395A75CD3329B4D50D4DD3FD /* LibraryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7035574CF7A2A5D966C99E31 /* LibraryViewModel.swift */; };
+		39DCC814B579266345BB0A1B /* PDFKitTextExtracting.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE44E3FE335B4A2E9AEB3E1B /* PDFKitTextExtracting.swift */; };
+		3ACDEE6981C0C8296D40245C /* DiscursoBiblicoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7899B7781D91702020E647 /* DiscursoBiblicoApp.swift */; };
+		4491052E10F21A36825BCC79 /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122A2222AA66DBFD5D90F575 /* NetworkMonitor.swift */; };
+		4702FF995C8C22F5BB4CB12B /* DiscursoCore in Frameworks */ = {isa = PBXBuildFile; productRef = 9834E4FEE9BDF6A57898CD11 /* DiscursoCore */; };
+		4F5CE869AB5A0E4824CA55DA /* ShareSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A98F13DC72D868693D15B44 /* ShareSheet.swift */; };
+		51CC640D5BC9DDD2512E148E /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 905EFA343A483EDD8ABC9296 /* AppEnvironment.swift */; };
+		547A27A73DF7F6FD5B83C458 /* SpeechListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840898F5AB161BD29B7DCA33 /* SpeechListViewModel.swift */; };
+		565079D726CF9BDF7A91BBBC /* SpeechEditorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EFFEB4171B42EF81DC83BF /* SpeechEditorViewModel.swift */; };
+		5AAF7432F4F4FE1436A0BE77 /* LibraryImportServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01478E99565BE913C26B5B99 /* LibraryImportServiceTests.swift */; };
+		5AF77FF0861EE114F609735F /* PayloadCoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27B78C0F491A24D5B3DE377 /* PayloadCoding.swift */; };
+		66E7F37F29E354BB4B30FB9B /* PresentationTextBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8045C18833A4FCD44A31CEA /* PresentationTextBuilderTests.swift */; };
+		671F641F46881301708BA274 /* SecurityScopedAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F6D72B1CF3E4C5352E5500 /* SecurityScopedAccess.swift */; };
+		77529E7E9EB094360A5F956F /* SpeechListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82FA81D430388B3FEFD5335A /* SpeechListView.swift */; };
+		7C7FE106EAD8C5406C39B12A /* ResearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E98E7FC379C923A8B320CDC /* ResearchView.swift */; };
+		7D5A5DDBEAF21162F8A8C5AC /* SwiftDataSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E2F23B5A3F5266F628951A /* SwiftDataSchema.swift */; };
+		7DDB5468B98DCE4CF6280485 /* PresentationTextBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460B7A2098D2CCEE24D1B745 /* PresentationTextBuilder.swift */; };
+		83935B96924C0A5A044673FF /* SystemSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = D96CDC259A54BF13C3F381FC /* SystemSupport.swift */; };
+		860B429555B740A1D168E1B3 /* ResearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DEB70C4AE4217E6E0E3A2D7 /* ResearchViewModel.swift */; };
+		86139A1225171BC1C20A6450 /* PresentationSettingsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61CFEED9ED87CD5011C751DC /* PresentationSettingsSheet.swift */; };
+		9356DD5AC22DE967BAE8B86D /* PresentationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75187BCA053605016732A89 /* PresentationView.swift */; };
+		A04A80E80890AE2B2730F0F9 /* LibraryImportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86FE4945B45C44460ACA0A3D /* LibraryImportService.swift */; };
+		A80FDCDA5A783299DFE31908 /* LibraryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2AC780DBF0406FAB878D376 /* LibraryListView.swift */; };
+		A97942AACE4AFBCBB928F2DB /* SpeechDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDD1FCD1A16BEC99E6417F8 /* SpeechDetailViewModel.swift */; };
+		B23CD78F8A533637F3C4A0A7 /* DiscursoCore in Frameworks */ = {isa = PBXBuildFile; productRef = AD66FF2F40FD9F47FE5F3D43 /* DiscursoCore */; };
+		B7C92625FA84211A717ED806 /* BackupCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14529F812295B46129FB54F /* BackupCoordinator.swift */; };
+		BD40CE5638CA6ED614F7444D /* CommonViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3A870D240F303D4C7A2314 /* CommonViews.swift */; };
+		C07835ED2EC5FEC946CB1F03 /* LibraryFileStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E602CC369D36CD9AA99C1A /* LibraryFileStoreTests.swift */; };
+		C1CC19E9FFE2C7B4F9479233 /* SwiftDataRepositories.swift in Sources */ = {isa = PBXBuildFile; fileRef = E312A5AA9A068D9BCC11E87C /* SwiftDataRepositories.swift */; };
+		C7CA0DFA91748FF09166AC0C /* SpeechEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC92EA8AD975FA97149C913 /* SpeechEditorView.swift */; };
+		CAFA8DF8ED520B941C9B2FFD /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE3CD130701E0A057BA0927D /* RootView.swift */; };
+		CE7217DB41A2FE13CFF67265 /* LibraryReaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70650E601B0A2C4E544CC23 /* LibraryReaderView.swift */; };
+		D00E69A623DCFCEC975D5308 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF90F80844CB51DD2E215DBC /* SettingsView.swift */; };
+		D1AED992296125D23F2255B4 /* SpeechPDFRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BEDF1CA1A5F5E72A785AD2 /* SpeechPDFRenderer.swift */; };
+		DCD118A8F54318E9582AAA14 /* SpeechReaderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B14C28AE8C85EA64F6B500D0 /* SpeechReaderService.swift */; };
+		DEB84BC45301ED4792323A85 /* BibleReferencePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0D5CD156E22B27FEB86FAA /* BibleReferencePicker.swift */; };
+		E063255B01FEFFD9DB13C4C5 /* SpeechDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7367783A7CD1DE8D93B8A9E5 /* SpeechDetailView.swift */; };
+		E2B2C325E5EEF1689F1BB351 /* PresentationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46EEA740CE95CF6A7670646C /* PresentationViewModel.swift */; };
+		EB88A13EC0A941FFE88A124E /* PayloadCodingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E697C9F515D239490F3D8872 /* PayloadCodingTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		6C11AF0B11C88ECD6046DCF8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F0E40F61A2628B2C4CBB10F8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 990CF64157BC977F10849EFA;
+			remoteInfo = DiscursoBiblico;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		01478E99565BE913C26B5B99 /* LibraryImportServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryImportServiceTests.swift; sourceTree = "<group>"; };
+		0A98F13DC72D868693D15B44 /* ShareSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSheet.swift; sourceTree = "<group>"; };
+		0BDD1FCD1A16BEC99E6417F8 /* SpeechDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechDetailViewModel.swift; sourceTree = "<group>"; };
+		122A2222AA66DBFD5D90F575 /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
+		1DEB70C4AE4217E6E0E3A2D7 /* ResearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResearchViewModel.swift; sourceTree = "<group>"; };
+		1E98E7FC379C923A8B320CDC /* ResearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResearchView.swift; sourceTree = "<group>"; };
+		2E3A870D240F303D4C7A2314 /* CommonViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonViews.swift; sourceTree = "<group>"; };
+		35B8E77EADCCA13747321AEC /* DiscursoBiblico.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = DiscursoBiblico.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3CA62B25C64AA992D19AB908 /* BibleReferenceLinkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BibleReferenceLinkTests.swift; sourceTree = "<group>"; };
+		3E6A845025504BCADA40517A /* BackupCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupCoordinatorTests.swift; sourceTree = "<group>"; };
+		403C3A000038532C1169FCEC /* DiscEasy */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DiscEasy; path = ..; sourceTree = SOURCE_ROOT; };
+		460B7A2098D2CCEE24D1B745 /* PresentationTextBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationTextBuilder.swift; sourceTree = "<group>"; };
+		46EEA740CE95CF6A7670646C /* PresentationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationViewModel.swift; sourceTree = "<group>"; };
+		55E2F23B5A3F5266F628951A /* SwiftDataSchema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataSchema.swift; sourceTree = "<group>"; };
+		5613EDE11198316CDA78DD72 /* SwiftDataRepositoriesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataRepositoriesTests.swift; sourceTree = "<group>"; };
+		61CFEED9ED87CD5011C751DC /* PresentationSettingsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationSettingsSheet.swift; sourceTree = "<group>"; };
+		687E9E4C70EBC80295CA222D /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		7035574CF7A2A5D966C99E31 /* LibraryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewModel.swift; sourceTree = "<group>"; };
+		7367783A7CD1DE8D93B8A9E5 /* SpeechDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechDetailView.swift; sourceTree = "<group>"; };
+		82FA81D430388B3FEFD5335A /* SpeechListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechListView.swift; sourceTree = "<group>"; };
+		840898F5AB161BD29B7DCA33 /* SpeechListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechListViewModel.swift; sourceTree = "<group>"; };
+		86FE3A85298D97C6951F6772 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		86FE4945B45C44460ACA0A3D /* LibraryImportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryImportService.swift; sourceTree = "<group>"; };
+		905EFA343A483EDD8ABC9296 /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
+		95B226520FC37F404150875A /* AppTestSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTestSupport.swift; sourceTree = "<group>"; };
+		A696A2310CF7E9A28255A876 /* PDFKitTextExtractingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFKitTextExtractingTests.swift; sourceTree = "<group>"; };
+		AA7899B7781D91702020E647 /* DiscursoBiblicoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscursoBiblicoApp.swift; sourceTree = "<group>"; };
+		AE3CD130701E0A057BA0927D /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		AE44E3FE335B4A2E9AEB3E1B /* PDFKitTextExtracting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFKitTextExtracting.swift; sourceTree = "<group>"; };
+		B016AF9D5FE8DD0544881C94 /* PresentationTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationTextView.swift; sourceTree = "<group>"; };
+		B14C28AE8C85EA64F6B500D0 /* SpeechReaderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechReaderService.swift; sourceTree = "<group>"; };
+		B70650E601B0A2C4E544CC23 /* LibraryReaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryReaderView.swift; sourceTree = "<group>"; };
+		B89DA6A1E6E326C91948F5E1 /* DiscursoBiblicoTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = DiscursoBiblicoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C27B78C0F491A24D5B3DE377 /* PayloadCoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayloadCoding.swift; sourceTree = "<group>"; };
+		C75187BCA053605016732A89 /* PresentationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationView.swift; sourceTree = "<group>"; };
+		D435027B5E353D846A996706 /* LibraryFileStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryFileStore.swift; sourceTree = "<group>"; };
+		D4BEDF1CA1A5F5E72A785AD2 /* SpeechPDFRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechPDFRenderer.swift; sourceTree = "<group>"; };
+		D96CDC259A54BF13C3F381FC /* SystemSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemSupport.swift; sourceTree = "<group>"; };
+		DE0D5CD156E22B27FEB86FAA /* BibleReferencePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BibleReferencePicker.swift; sourceTree = "<group>"; };
+		DF90F80844CB51DD2E215DBC /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		E2AC780DBF0406FAB878D376 /* LibraryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryListView.swift; sourceTree = "<group>"; };
+		E312A5AA9A068D9BCC11E87C /* SwiftDataRepositories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataRepositories.swift; sourceTree = "<group>"; };
+		E697C9F515D239490F3D8872 /* PayloadCodingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayloadCodingTests.swift; sourceTree = "<group>"; };
+		E7E602CC369D36CD9AA99C1A /* LibraryFileStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryFileStoreTests.swift; sourceTree = "<group>"; };
+		EB5891BA9D5FBCDE5D3BA6C2 /* BiblePassagePanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiblePassagePanel.swift; sourceTree = "<group>"; };
+		F14529F812295B46129FB54F /* BackupCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupCoordinator.swift; sourceTree = "<group>"; };
+		F4F6D72B1CF3E4C5352E5500 /* SecurityScopedAccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityScopedAccess.swift; sourceTree = "<group>"; };
+		F6EC4CA36C328243698FFBF6 /* BibleReferenceLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BibleReferenceLink.swift; sourceTree = "<group>"; };
+		F8045C18833A4FCD44A31CEA /* PresentationTextBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationTextBuilderTests.swift; sourceTree = "<group>"; };
+		F9EFFEB4171B42EF81DC83BF /* SpeechEditorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechEditorViewModel.swift; sourceTree = "<group>"; };
+		FBC92EA8AD975FA97149C913 /* SpeechEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechEditorView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		451A817AB9174712114A90AA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4702FF995C8C22F5BB4CB12B /* DiscursoCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		94059DD6F542C3127B050DEF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B23CD78F8A533637F3C4A0A7 /* DiscursoCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		151BD5343972B1C09630DA1D /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				61CFEED9ED87CD5011C751DC /* PresentationSettingsSheet.swift */,
+				460B7A2098D2CCEE24D1B745 /* PresentationTextBuilder.swift */,
+				B016AF9D5FE8DD0544881C94 /* PresentationTextView.swift */,
+				C75187BCA053605016732A89 /* PresentationView.swift */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		1F56C0FA5460C06184B498D0 /* DiscursoBiblicoTests */ = {
+			isa = PBXGroup;
+			children = (
+				95B226520FC37F404150875A /* AppTestSupport.swift */,
+				3E6A845025504BCADA40517A /* BackupCoordinatorTests.swift */,
+				3CA62B25C64AA992D19AB908 /* BibleReferenceLinkTests.swift */,
+				E7E602CC369D36CD9AA99C1A /* LibraryFileStoreTests.swift */,
+				01478E99565BE913C26B5B99 /* LibraryImportServiceTests.swift */,
+				E697C9F515D239490F3D8872 /* PayloadCodingTests.swift */,
+				A696A2310CF7E9A28255A876 /* PDFKitTextExtractingTests.swift */,
+				F8045C18833A4FCD44A31CEA /* PresentationTextBuilderTests.swift */,
+				5613EDE11198316CDA78DD72 /* SwiftDataRepositoriesTests.swift */,
+			);
+			path = DiscursoBiblicoTests;
+			sourceTree = "<group>";
+		};
+		1F84B77E5C25389F2E79E34C /* Speeches */ = {
+			isa = PBXGroup;
+			children = (
+				7367783A7CD1DE8D93B8A9E5 /* SpeechDetailView.swift */,
+				FBC92EA8AD975FA97149C913 /* SpeechEditorView.swift */,
+				82FA81D430388B3FEFD5335A /* SpeechListView.swift */,
+			);
+			path = Speeches;
+			sourceTree = "<group>";
+		};
+		320C244B3A71C4163602078D /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				DF90F80844CB51DD2E215DBC /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		40D1B8087C8B2BAC30580ABC /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				AE3CD130701E0A057BA0927D /* RootView.swift */,
+				CF872A6CA2CCFF784D43D68F /* Bible */,
+				DED5A0F588187D98EF3062D9 /* Components */,
+				80E84A55BF9934D3913AD798 /* Library */,
+				151BD5343972B1C09630DA1D /* Presentation */,
+				AEDBC49D77798FDCEA9997EC /* Research */,
+				320C244B3A71C4163602078D /* Settings */,
+				1F84B77E5C25389F2E79E34C /* Speeches */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		49D0049CF0BD9C476ABA7A5E = {
+			isa = PBXGroup;
+			children = (
+				C5999F98058F93FD55584589 /* DiscursoBiblico */,
+				1F56C0FA5460C06184B498D0 /* DiscursoBiblicoTests */,
+				6FF3A9DDC0D94BF71ABB580F /* Packages */,
+				F43A88DC8D4B427DED2B07FF /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		6FF3A9DDC0D94BF71ABB580F /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				403C3A000038532C1169FCEC /* DiscEasy */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		80E84A55BF9934D3913AD798 /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				E2AC780DBF0406FAB878D376 /* LibraryListView.swift */,
+				B70650E601B0A2C4E544CC23 /* LibraryReaderView.swift */,
+			);
+			path = Library;
+			sourceTree = "<group>";
+		};
+		96B64C1112B2BFD9FA492709 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				7035574CF7A2A5D966C99E31 /* LibraryViewModel.swift */,
+				46EEA740CE95CF6A7670646C /* PresentationViewModel.swift */,
+				1DEB70C4AE4217E6E0E3A2D7 /* ResearchViewModel.swift */,
+				687E9E4C70EBC80295CA222D /* SettingsViewModel.swift */,
+				0BDD1FCD1A16BEC99E6417F8 /* SpeechDetailViewModel.swift */,
+				F9EFFEB4171B42EF81DC83BF /* SpeechEditorViewModel.swift */,
+				840898F5AB161BD29B7DCA33 /* SpeechListViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		AEDBC49D77798FDCEA9997EC /* Research */ = {
+			isa = PBXGroup;
+			children = (
+				1E98E7FC379C923A8B320CDC /* ResearchView.swift */,
+			);
+			path = Research;
+			sourceTree = "<group>";
+		};
+		C0D8541F491B3299BDC2AF5B /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				F14529F812295B46129FB54F /* BackupCoordinator.swift */,
+				F6EC4CA36C328243698FFBF6 /* BibleReferenceLink.swift */,
+				86FE4945B45C44460ACA0A3D /* LibraryImportService.swift */,
+				122A2222AA66DBFD5D90F575 /* NetworkMonitor.swift */,
+				AE44E3FE335B4A2E9AEB3E1B /* PDFKitTextExtracting.swift */,
+				D4BEDF1CA1A5F5E72A785AD2 /* SpeechPDFRenderer.swift */,
+				B14C28AE8C85EA64F6B500D0 /* SpeechReaderService.swift */,
+				D96CDC259A54BF13C3F381FC /* SystemSupport.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		C5999F98058F93FD55584589 /* DiscursoBiblico */ = {
+			isa = PBXGroup;
+			children = (
+				905EFA343A483EDD8ABC9296 /* AppEnvironment.swift */,
+				AA7899B7781D91702020E647 /* DiscursoBiblicoApp.swift */,
+				86FE3A85298D97C6951F6772 /* Info.plist */,
+				EC836EEFDDA245DF2E7E77BC /* Persistence */,
+				C0D8541F491B3299BDC2AF5B /* Services */,
+				96B64C1112B2BFD9FA492709 /* ViewModels */,
+				40D1B8087C8B2BAC30580ABC /* Views */,
+			);
+			path = DiscursoBiblico;
+			sourceTree = "<group>";
+		};
+		CF872A6CA2CCFF784D43D68F /* Bible */ = {
+			isa = PBXGroup;
+			children = (
+				EB5891BA9D5FBCDE5D3BA6C2 /* BiblePassagePanel.swift */,
+				DE0D5CD156E22B27FEB86FAA /* BibleReferencePicker.swift */,
+			);
+			path = Bible;
+			sourceTree = "<group>";
+		};
+		DED5A0F588187D98EF3062D9 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				2E3A870D240F303D4C7A2314 /* CommonViews.swift */,
+				0A98F13DC72D868693D15B44 /* ShareSheet.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		EC836EEFDDA245DF2E7E77BC /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				D435027B5E353D846A996706 /* LibraryFileStore.swift */,
+				C27B78C0F491A24D5B3DE377 /* PayloadCoding.swift */,
+				F4F6D72B1CF3E4C5352E5500 /* SecurityScopedAccess.swift */,
+				E312A5AA9A068D9BCC11E87C /* SwiftDataRepositories.swift */,
+				55E2F23B5A3F5266F628951A /* SwiftDataSchema.swift */,
+			);
+			path = Persistence;
+			sourceTree = "<group>";
+		};
+		F43A88DC8D4B427DED2B07FF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				35B8E77EADCCA13747321AEC /* DiscursoBiblico.app */,
+				B89DA6A1E6E326C91948F5E1 /* DiscursoBiblicoTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		990CF64157BC977F10849EFA /* DiscursoBiblico */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F03FC570F15B3ABDB12CC0E1 /* Build configuration list for PBXNativeTarget "DiscursoBiblico" */;
+			buildPhases = (
+				D1B2720EB9BBFBC1876ADE18 /* Sources */,
+				94059DD6F542C3127B050DEF /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DiscursoBiblico;
+			packageProductDependencies = (
+				AD66FF2F40FD9F47FE5F3D43 /* DiscursoCore */,
+			);
+			productName = DiscursoBiblico;
+			productReference = 35B8E77EADCCA13747321AEC /* DiscursoBiblico.app */;
+			productType = "com.apple.product-type.application";
+		};
+		B8E4E717912F21BF3BCA988E /* DiscursoBiblicoTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 915B09E959F5B58D4AAD0CB3 /* Build configuration list for PBXNativeTarget "DiscursoBiblicoTests" */;
+			buildPhases = (
+				7FE7B834BB810B1B467ABD59 /* Sources */,
+				451A817AB9174712114A90AA /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				69242931818967996775AC37 /* PBXTargetDependency */,
+			);
+			name = DiscursoBiblicoTests;
+			packageProductDependencies = (
+				9834E4FEE9BDF6A57898CD11 /* DiscursoCore */,
+			);
+			productName = DiscursoBiblicoTests;
+			productReference = B89DA6A1E6E326C91948F5E1 /* DiscursoBiblicoTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F0E40F61A2628B2C4CBB10F8 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					990CF64157BC977F10849EFA = {
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = AE5DF86AA73640EF7497DEB5 /* Build configuration list for PBXProject "DiscursoBiblico" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 49D0049CF0BD9C476ABA7A5E;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				D64F156F9BAE14F5783BDCFE /* XCLocalSwiftPackageReference ".." */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = F43A88DC8D4B427DED2B07FF /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				990CF64157BC977F10849EFA /* DiscursoBiblico */,
+				B8E4E717912F21BF3BCA988E /* DiscursoBiblicoTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		7FE7B834BB810B1B467ABD59 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0998F2DEC088C7391F942017 /* AppTestSupport.swift in Sources */,
+				0900A6E8CC7D7612F5A9D235 /* BackupCoordinatorTests.swift in Sources */,
+				21B1ADCE6904EC330B37F7A9 /* BibleReferenceLinkTests.swift in Sources */,
+				C07835ED2EC5FEC946CB1F03 /* LibraryFileStoreTests.swift in Sources */,
+				5AAF7432F4F4FE1436A0BE77 /* LibraryImportServiceTests.swift in Sources */,
+				109D4F99345E19114F214F75 /* PDFKitTextExtractingTests.swift in Sources */,
+				EB88A13EC0A941FFE88A124E /* PayloadCodingTests.swift in Sources */,
+				66E7F37F29E354BB4B30FB9B /* PresentationTextBuilderTests.swift in Sources */,
+				02B57107E7F465A347FFB218 /* SwiftDataRepositoriesTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D1B2720EB9BBFBC1876ADE18 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				51CC640D5BC9DDD2512E148E /* AppEnvironment.swift in Sources */,
+				B7C92625FA84211A717ED806 /* BackupCoordinator.swift in Sources */,
+				34BFA351489D63A5E8464F9F /* BiblePassagePanel.swift in Sources */,
+				270FF85CD79430D4CBD64350 /* BibleReferenceLink.swift in Sources */,
+				DEB84BC45301ED4792323A85 /* BibleReferencePicker.swift in Sources */,
+				BD40CE5638CA6ED614F7444D /* CommonViews.swift in Sources */,
+				3ACDEE6981C0C8296D40245C /* DiscursoBiblicoApp.swift in Sources */,
+				06EA2CC23575A5FF267B7BDA /* LibraryFileStore.swift in Sources */,
+				A04A80E80890AE2B2730F0F9 /* LibraryImportService.swift in Sources */,
+				A80FDCDA5A783299DFE31908 /* LibraryListView.swift in Sources */,
+				CE7217DB41A2FE13CFF67265 /* LibraryReaderView.swift in Sources */,
+				395A75CD3329B4D50D4DD3FD /* LibraryViewModel.swift in Sources */,
+				4491052E10F21A36825BCC79 /* NetworkMonitor.swift in Sources */,
+				39DCC814B579266345BB0A1B /* PDFKitTextExtracting.swift in Sources */,
+				5AF77FF0861EE114F609735F /* PayloadCoding.swift in Sources */,
+				86139A1225171BC1C20A6450 /* PresentationSettingsSheet.swift in Sources */,
+				7DDB5468B98DCE4CF6280485 /* PresentationTextBuilder.swift in Sources */,
+				1FB481C53A77435FF2774FB6 /* PresentationTextView.swift in Sources */,
+				9356DD5AC22DE967BAE8B86D /* PresentationView.swift in Sources */,
+				E2B2C325E5EEF1689F1BB351 /* PresentationViewModel.swift in Sources */,
+				7C7FE106EAD8C5406C39B12A /* ResearchView.swift in Sources */,
+				860B429555B740A1D168E1B3 /* ResearchViewModel.swift in Sources */,
+				CAFA8DF8ED520B941C9B2FFD /* RootView.swift in Sources */,
+				671F641F46881301708BA274 /* SecurityScopedAccess.swift in Sources */,
+				D00E69A623DCFCEC975D5308 /* SettingsView.swift in Sources */,
+				305337B3C06A30ECE862C755 /* SettingsViewModel.swift in Sources */,
+				4F5CE869AB5A0E4824CA55DA /* ShareSheet.swift in Sources */,
+				E063255B01FEFFD9DB13C4C5 /* SpeechDetailView.swift in Sources */,
+				A97942AACE4AFBCBB928F2DB /* SpeechDetailViewModel.swift in Sources */,
+				C7CA0DFA91748FF09166AC0C /* SpeechEditorView.swift in Sources */,
+				565079D726CF9BDF7A91BBBC /* SpeechEditorViewModel.swift in Sources */,
+				77529E7E9EB094360A5F956F /* SpeechListView.swift in Sources */,
+				547A27A73DF7F6FD5B83C458 /* SpeechListViewModel.swift in Sources */,
+				D1AED992296125D23F2255B4 /* SpeechPDFRenderer.swift in Sources */,
+				DCD118A8F54318E9582AAA14 /* SpeechReaderService.swift in Sources */,
+				C1CC19E9FFE2C7B4F9479233 /* SwiftDataRepositories.swift in Sources */,
+				7D5A5DDBEAF21162F8A8C5AC /* SwiftDataSchema.swift in Sources */,
+				83935B96924C0A5A044673FF /* SystemSupport.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		69242931818967996775AC37 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 990CF64157BC977F10849EFA /* DiscursoBiblico */;
+			targetProxy = 6C11AF0B11C88ECD6046DCF8 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		56A054F1AD40C0F2A994C406 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		586C7F5AC403A9154FBC38E5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		76CF8BA0CC65E326B4F2CF1D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = br.org.discursobiblico.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DiscursoBiblico.app/DiscursoBiblico";
+			};
+			name = Release;
+		};
+		9BF0080C8F9A363B3996BE7C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = DiscursoBiblico/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = br.org.discursobiblico.app;
+				PRODUCT_NAME = "Discurso Biblico";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BBEDFAD24772F395E039C344 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = DiscursoBiblico/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = br.org.discursobiblico.app;
+				PRODUCT_NAME = "Discurso Biblico";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		CA0DF5E83331DF6C5B9A4E27 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = br.org.discursobiblico.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DiscursoBiblico.app/DiscursoBiblico";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		915B09E959F5B58D4AAD0CB3 /* Build configuration list for PBXNativeTarget "DiscursoBiblicoTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CA0DF5E83331DF6C5B9A4E27 /* Debug */,
+				76CF8BA0CC65E326B4F2CF1D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		AE5DF86AA73640EF7497DEB5 /* Build configuration list for PBXProject "DiscursoBiblico" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				56A054F1AD40C0F2A994C406 /* Debug */,
+				586C7F5AC403A9154FBC38E5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F03FC570F15B3ABDB12CC0E1 /* Build configuration list for PBXNativeTarget "DiscursoBiblico" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9BF0080C8F9A363B3996BE7C /* Debug */,
+				BBEDFAD24772F395E039C344 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		D64F156F9BAE14F5783BDCFE /* XCLocalSwiftPackageReference ".." */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ..;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		9834E4FEE9BDF6A57898CD11 /* DiscursoCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DiscursoCore;
+		};
+		AD66FF2F40FD9F47FE5F3D43 /* DiscursoCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DiscursoCore;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = F0E40F61A2628B2C4CBB10F8 /* Project object */;
+}
