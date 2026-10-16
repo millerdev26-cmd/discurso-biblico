@@ -24,7 +24,6 @@ struct SpeechStatusChip: View {
 
     private var color: Color {
         switch status {
-        case .draft: return .gray
         case .preparing: return .orange
         case .ready: return .green
         case .delivered: return .blue

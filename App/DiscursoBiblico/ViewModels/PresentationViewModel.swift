@@ -66,7 +66,9 @@ final class PresentationViewModel {
     private let repository: any SpeechRepository
     private let autosave: AutosaveCoordinator
     private var engine = AutoScrollEngine()
-    private var ticker: Timer?
+    /// `nonisolated(unsafe)`: o `deinit` (fora do ator principal) invalida o
+    /// timer; todas as escritas continuam acontecendo na ação principal.
+    nonisolated(unsafe) private var ticker: Timer?
     private var lastTick: Date?
     private var lastReportedOffset: CGFloat = 0
     private var didApplyInitialPosition = false
@@ -226,8 +228,14 @@ final class PresentationViewModel {
         } else if sectionRanges.indices.contains(index) {
             requestScrollToSection(index)
         }
-        pauseForInteraction(message: nil)
-        statusMessage = nil
+        // Trocar de tópico conta como interação: a rolagem automática segue a
+        // política escolhida (pausar / pausar e retomar / continuar). Com a
+        // rolagem desligada, apenas limpa o aviso anterior.
+        if session.autoScroll.isEnabled {
+            noteUserInteraction(offset: targetOffset)
+        } else {
+            statusMessage = nil
+        }
     }
 
     func nextSection() {

@@ -54,7 +54,7 @@ struct SpeechEditorView: View {
             get: { referenceEditingBlockID.map { ReferenceTarget(id: $0) } },
             set: { if $0 == nil { referenceEditingBlockID = nil } }
         )) { target in
-            BibleReferencePicker(initial: model.flatMap { block(withID: target.id, in: $0)?.reference }) { reference in
+            BibleReferencePicker(initial: model.flatMap { findBlock(withID: target.id, in: $0)?.reference }) { reference in
                 model?.setBlockReference(reference, blockID: target.id)
             }
         }
@@ -497,7 +497,7 @@ struct SpeechEditorView: View {
                     }
                 }
                 TextField("Detalhe (ex.: “3 s”, “tom solene”)", text: Binding(
-                    get: { block(withID: block.id, in: model)?.cueDetail ?? "" },
+                    get: { findBlock(withID: block.id, in: model)?.cueDetail ?? "" },
                     set: { model.setBlockCue(block.cue ?? .pause, detail: $0.isEmpty ? nil : $0, blockID: block.id) }
                 ))
             }
@@ -579,18 +579,20 @@ struct SpeechEditorView: View {
 
     private func textBinding(_ model: SpeechEditorViewModel, blockID: UUID) -> Binding<String> {
         Binding(
-            get: { block(withID: blockID, in: model)?.text ?? "" },
+            get: { findBlock(withID: blockID, in: model)?.text ?? "" },
             set: { model.setBlockText($0, blockID: blockID) }
         )
     }
 
     private func itemText(_ model: SpeechEditorViewModel, blockID: UUID, index: Int) -> String {
-        guard let block = block(withID: blockID, in: model),
+        guard let block = findBlock(withID: blockID, in: model),
               block.items.indices.contains(index) else { return "" }
         return block.items[index]
     }
 
-    private func block(withID id: UUID, in model: SpeechEditorViewModel) -> SpeechBlock? {
+    /// Procura um bloco pelo identificador (nome próprio: `block` é usado como
+    /// parâmetro em vários métodos desta tela e sombrearia este método).
+    private func findBlock(withID id: UUID, in model: SpeechEditorViewModel) -> SpeechBlock? {
         for section in model.speech.sections {
             if let block = section.blocks.first(where: { $0.id == id }) {
                 return block

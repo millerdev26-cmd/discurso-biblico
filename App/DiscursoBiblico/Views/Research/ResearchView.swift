@@ -21,7 +21,7 @@ struct ResearchView: View {
     @Environment(AppEnvironment.self) private var environment
 
     @State private var model: ResearchViewModel?
-    @State private var section: Section = .results
+    @State private var section: SearchSection = .results
     @State private var savingResult: ResearchResult?
     @State private var noteDraft = ""
     @State private var attachingResult: ResearchResult?
@@ -29,7 +29,8 @@ struct ResearchView: View {
     @State private var isLoadingSpeeches = false
     @State private var localPreviewItem: LibraryItem?
 
-    enum Section: String, CaseIterable, Identifiable {
+    /// Seções fixas da tela (nome próprio para não ofuscar `SwiftUI.Section`).
+    enum SearchSection: String, CaseIterable, Identifiable {
         case results
         case saved
         case history
@@ -180,7 +181,7 @@ struct ResearchView: View {
     private func searchSection(_ model: ResearchViewModel) -> some View {
         Section {
             Picker("Seção", selection: $section) {
-                ForEach(Section.allCases) { item in
+                ForEach(SearchSection.allCases) { item in
                     Text(item.displayName).tag(item)
                 }
             }

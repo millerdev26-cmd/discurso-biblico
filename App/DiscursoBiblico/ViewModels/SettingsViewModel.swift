@@ -68,6 +68,16 @@ final class SettingsViewModel {
         try? await settingsRepository.save(profiles)
     }
 
+    /// Adiciona um perfil de leitura (a lista é somente-leitura para as telas).
+    func addProfile(_ profile: ReadingProfile) {
+        profiles.append(profile)
+    }
+
+    /// Remove um perfil de leitura pelo identificador.
+    func deleteProfile(id: UUID) {
+        profiles.removeAll { $0.id == id }
+    }
+
     // MARK: Provedores de pesquisa
 
     var availableProviders: [(id: String, displayName: String, requiresNetwork: Bool)] {

@@ -102,7 +102,12 @@ struct PresentationTextBuilder {
         for (index, section) in speech.sections.enumerated() {
             let start = output.length
             if index > 0 {
-                output.append(NSAttributedString(string: "\n", attributes: paragraphAttributes()))
+                output.append(
+                    NSAttributedString(
+                        string: "\n",
+                        attributes: [.paragraphStyle: paragraphStyle()]
+                    )
+                )
             }
             for block in section.blocks where shouldShow(block) {
                 output.append(attributed(block))
@@ -169,7 +174,7 @@ struct PresentationTextBuilder {
     private func attributes(for block: SpeechBlock) -> [NSAttributedString.Key: Any] {
         let colors = palette
         var attributes: [NSAttributedString.Key: Any] = [
-            .paragraphStyle: paragraphAttributes(for: block),
+            .paragraphStyle: paragraphStyle(for: block),
             .foregroundColor: colors.text
         ]
 
@@ -210,7 +215,7 @@ struct PresentationTextBuilder {
         return attributes
     }
 
-    private func paragraphAttributes(for block: SpeechBlock? = nil) -> NSParagraphStyle {
+    private func paragraphStyle(for block: SpeechBlock? = nil) -> NSParagraphStyle {
         let paragraph = NSMutableParagraphStyle()
         paragraph.lineHeightMultiple = CGFloat(preferences.lineHeightMultiple)
         paragraph.paragraphSpacing = CGFloat(preferences.paragraphSpacing) * CGFloat(preferences.fontSize) * 0.5

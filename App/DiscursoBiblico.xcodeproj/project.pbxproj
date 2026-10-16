@@ -43,6 +43,7 @@
 		A97942AACE4AFBCBB928F2DB /* SpeechDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDD1FCD1A16BEC99E6417F8 /* SpeechDetailViewModel.swift */; };
 		B23CD78F8A533637F3C4A0A7 /* DiscursoCore in Frameworks */ = {isa = PBXBuildFile; productRef = AD66FF2F40FD9F47FE5F3D43 /* DiscursoCore */; };
 		B7C92625FA84211A717ED806 /* BackupCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14529F812295B46129FB54F /* BackupCoordinator.swift */; };
+		B827FB69BD74788FF8088867 /* CoreAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C6C94D7FB4159906675E5C /* CoreAliases.swift */; };
 		BD40CE5638CA6ED614F7444D /* CommonViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3A870D240F303D4C7A2314 /* CommonViews.swift */; };
 		C07835ED2EC5FEC946CB1F03 /* LibraryFileStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E602CC369D36CD9AA99C1A /* LibraryFileStoreTests.swift */; };
 		C1CC19E9FFE2C7B4F9479233 /* SwiftDataRepositories.swift in Sources */ = {isa = PBXBuildFile; fileRef = E312A5AA9A068D9BCC11E87C /* SwiftDataRepositories.swift */; };
@@ -84,6 +85,7 @@
 		46EEA740CE95CF6A7670646C /* PresentationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationViewModel.swift; sourceTree = "<group>"; };
 		55E2F23B5A3F5266F628951A /* SwiftDataSchema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataSchema.swift; sourceTree = "<group>"; };
 		5613EDE11198316CDA78DD72 /* SwiftDataRepositoriesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataRepositoriesTests.swift; sourceTree = "<group>"; };
+		58C6C94D7FB4159906675E5C /* CoreAliases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreAliases.swift; sourceTree = "<group>"; };
 		61CFEED9ED87CD5011C751DC /* PresentationSettingsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationSettingsSheet.swift; sourceTree = "<group>"; };
 		687E9E4C70EBC80295CA222D /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		7035574CF7A2A5D966C99E31 /* LibraryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewModel.swift; sourceTree = "<group>"; };
@@ -270,6 +272,7 @@
 			isa = PBXGroup;
 			children = (
 				905EFA343A483EDD8ABC9296 /* AppEnvironment.swift */,
+				58C6C94D7FB4159906675E5C /* CoreAliases.swift */,
 				AA7899B7781D91702020E647 /* DiscursoBiblicoApp.swift */,
 				86FE3A85298D97C6951F6772 /* Info.plist */,
 				EC836EEFDDA245DF2E7E77BC /* Persistence */,
@@ -425,6 +428,7 @@
 				270FF85CD79430D4CBD64350 /* BibleReferenceLink.swift in Sources */,
 				DEB84BC45301ED4792323A85 /* BibleReferencePicker.swift in Sources */,
 				BD40CE5638CA6ED614F7444D /* CommonViews.swift in Sources */,
+				B827FB69BD74788FF8088867 /* CoreAliases.swift in Sources */,
 				3ACDEE6981C0C8296D40245C /* DiscursoBiblicoApp.swift in Sources */,
 				06EA2CC23575A5FF267B7BDA /* LibraryFileStore.swift in Sources */,
 				A04A80E80890AE2B2730F0F9 /* LibraryImportService.swift in Sources */,

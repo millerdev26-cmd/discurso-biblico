@@ -231,7 +231,7 @@ struct SettingsView: View {
                     }
                     if !profile.isBuiltIn {
                         Button(role: .destructive) {
-                            model.profiles.removeAll { $0.id == profile.id }
+                            model.deleteProfile(id: profile.id)
                             Task { await model.persistProfiles() }
                         } label: {
                             Label("Apagar perfil", systemImage: "trash")
@@ -499,7 +499,7 @@ struct SettingsView: View {
         profileNameDraft = ""
         guard !name.isEmpty, let model else { return }
         let profile = ReadingProfile(name: name, preferences: model.settings.defaultPresentation, isBuiltIn: false)
-        model.profiles.append(profile)
+        model.addProfile(profile)
         model.settings.lastUsedReadingProfileID = profile.id
         Task { await model.persistProfiles() }
     }

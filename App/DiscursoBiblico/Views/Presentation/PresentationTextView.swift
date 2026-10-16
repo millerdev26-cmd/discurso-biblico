@@ -39,7 +39,7 @@ struct PresentationTextView: UIViewRepresentable {
     }
 
     func makeUIView(context: Context) -> PresentationScrollTextView {
-        let textView = PresentationScrollTextView(usingTextLayoutManager: false, frame: .zero)
+        let textView = PresentationScrollTextView.makeTextView()
         textView.delegate = context.coordinator
         context.coordinator.attach(textView)
         textView.isEditable = false
@@ -220,6 +220,25 @@ struct PresentationTextView: UIViewRepresentable {
 final class PresentationScrollTextView: UITextView {
 
     var onLayoutPass: (() -> Void)?
+
+    /// Cria a instância **sempre com TextKit 1**.
+    ///
+    /// No iOS 16+ o `UITextView(frame:)` usa TextKit 2 por padrão, cujo
+    /// `textLayoutManager` não oferece `boundingRect(forGlyphRange:in:)` — a
+    /// medição das posições de tópico depende do `NSLayoutManager`. Iniciar com
+    /// uma pilha TextKit 1 própria (storage → layout manager → container) fixa
+    /// o caminho antigo, que é o que o `Coordinator` mede.
+    static func makeTextView() -> PresentationScrollTextView {
+        let textStorage = NSTextStorage()
+        let layoutManager = NSLayoutManager()
+        textStorage.addLayoutManager(layoutManager)
+        let container = NSTextContainer(
+            size: CGSize(width: 0, height: .greatestFiniteMagnitude)
+        )
+        container.widthTracksTextView = true
+        layoutManager.addTextContainer(container)
+        return PresentationScrollTextView(frame: .zero, textContainer: container)
+    }
 
     override func layoutSubviews() {
         super.layoutSubviews()

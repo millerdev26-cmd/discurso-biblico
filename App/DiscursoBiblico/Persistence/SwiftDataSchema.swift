@@ -98,7 +98,7 @@ final class SpeechRecord {
             folderID: folderID,
             createdAt: createdAt,
             updatedAt: updatedAt,
-            status: SpeechStatus(rawValue: statusRaw) ?? .draft,
+            status: SpeechStatus(rawValue: statusRaw) ?? .preparing,
             isFavorite: isFavorite,
             sectionCount: sectionCount,
             wordCount: wordCount,
