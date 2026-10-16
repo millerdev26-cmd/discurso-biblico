@@ -251,6 +251,39 @@ listado em [`LIMITACOES.md`](LIMITACOES.md) e no checklist do
   proferimento (as marcações agora são resolvidas com `InlineMarkup`, como na
   exportação).
 
+**Defeitos reais encontrados pela primeira compilação completa** (runner
+macOS do GitHub Actions, Xcode 16.4, simulador iPhone 16 — nenhum deles
+aparecia na análise sintática):
+
+- `TEST_HOST` apontava para `DiscursoBiblico.app`, mas o produto era
+  “Discurso Biblico.app” (`PRODUCT_NAME` com espaço): o alvo de testes não
+  encontrava o aplicativo. O binário passou a `$(TARGET_NAME)` e o nome de
+  exibição continua “Discurso Bíblico” no `Info.plist`;
+- `LibraryItem` ambíguo: o framework `DeveloperToolsSupport` (pré-visualizações
+  do Xcode) também declara esse tipo. Resolvido com apelido no módulo
+  (`CoreAliases.swift`), que tem precedência sobre os importados;
+- `SpeechStatus.draft` não existe — os estados são
+  `preparing/ready/delivered/archived`;
+- o enum aninhado `Section` do `ResearchView` ofuscava `SwiftUI.Section`
+  (renomeado para `SearchSection`);
+- `UITextView(usingTextLayoutManager:)` não existe no iOS: o modo de
+  apresentação agora monta a pilha **TextKit 1 explícita**
+  (storage → layout manager → container), garantindo o `NSLayoutManager`
+  usado na medição dos tópicos;
+- `paragraphAttributes()` devolvia `NSParagraphStyle` e era passado como se
+  fosse dicionário de atributos (renomeado `paragraphStyle`);
+- o método `block(withID:in:)` era sombreado pelo parâmetro `block` em
+  `SpeechEditorView` (renomeado `findBlock`);
+- `profiles` é somente-leitura nas telas: faltavam `addProfile`/`deleteProfile`
+  no `SettingsViewModel`;
+- `deinit` acessava o `ticker` do ator principal
+  (`nonisolated(unsafe)` no `PresentationViewModel`);
+- `CGSize(width: 0, height: .greatestFiniteMagnitude)` ambíguo (exigiu
+  `CGFloat.greatestFiniteMagnitude`);
+- `UIApplication.open(url)` dentro de contexto `async` resolve para a variante
+  assíncrona (ponte automática do completion handler) e exige `await`; os
+  pontos em contexto assíncrono passaram a usar a variante síncrona explícita.
+
 ## 18. Fixtures sintéticas
 
 **Decisão.** EPUBs, PDFs, casos de DEFLATE e arquivos de exemplo são gerados
