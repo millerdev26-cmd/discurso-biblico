@@ -6,8 +6,10 @@
 //
 //  Por que `UITextView`: a rolagem automática precisa de deslocamento em
 //  pontos, sincronizado com o `AutoScrollEngine` do núcleo. Com o TextKit 1
-//  (`usingTextLayoutManager: false`) também conseguimos medir exatamente onde
-//  cada tópico começa — usado para "tópico atual" e para pular de tópico.
+//  (pilha `NSTextStorage` → `NSLayoutManager` → `NSTextContainer` montada em
+//  `PresentationScrollTextView.makeTextView()`) também conseguimos medir
+//  exatamente onde cada tópico começa — usado para "tópico atual" e para
+//  pular de tópico.
 //
 //  Regras de interação:
 //   - toque simples: mostra/oculta os controles e pausa a rolagem;

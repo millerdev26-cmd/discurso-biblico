@@ -12,6 +12,7 @@
 		0900A6E8CC7D7612F5A9D235 /* BackupCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A845025504BCADA40517A /* BackupCoordinatorTests.swift */; };
 		0998F2DEC088C7391F942017 /* AppTestSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B226520FC37F404150875A /* AppTestSupport.swift */; };
 		109D4F99345E19114F214F75 /* PDFKitTextExtractingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A696A2310CF7E9A28255A876 /* PDFKitTextExtractingTests.swift */; };
+		15747870B458307087A4A7FB /* CoreAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC554BE118F24B6AE6A44527 /* CoreAliases.swift */; };
 		1FB481C53A77435FF2774FB6 /* PresentationTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B016AF9D5FE8DD0544881C94 /* PresentationTextView.swift */; };
 		21B1ADCE6904EC330B37F7A9 /* BibleReferenceLinkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CA62B25C64AA992D19AB908 /* BibleReferenceLinkTests.swift */; };
 		270FF85CD79430D4CBD64350 /* BibleReferenceLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EC4CA36C328243698FFBF6 /* BibleReferenceLink.swift */; };
@@ -104,6 +105,7 @@
 		B14C28AE8C85EA64F6B500D0 /* SpeechReaderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechReaderService.swift; sourceTree = "<group>"; };
 		B70650E601B0A2C4E544CC23 /* LibraryReaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryReaderView.swift; sourceTree = "<group>"; };
 		B89DA6A1E6E326C91948F5E1 /* DiscursoBiblicoTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = DiscursoBiblicoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		BC554BE118F24B6AE6A44527 /* CoreAliases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreAliases.swift; sourceTree = "<group>"; };
 		C27B78C0F491A24D5B3DE377 /* PayloadCoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayloadCoding.swift; sourceTree = "<group>"; };
 		C75187BCA053605016732A89 /* PresentationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationView.swift; sourceTree = "<group>"; };
 		D435027B5E353D846A996706 /* LibraryFileStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryFileStore.swift; sourceTree = "<group>"; };
@@ -161,6 +163,7 @@
 				95B226520FC37F404150875A /* AppTestSupport.swift */,
 				3E6A845025504BCADA40517A /* BackupCoordinatorTests.swift */,
 				3CA62B25C64AA992D19AB908 /* BibleReferenceLinkTests.swift */,
+				BC554BE118F24B6AE6A44527 /* CoreAliases.swift */,
 				E7E602CC369D36CD9AA99C1A /* LibraryFileStoreTests.swift */,
 				01478E99565BE913C26B5B99 /* LibraryImportServiceTests.swift */,
 				E697C9F515D239490F3D8872 /* PayloadCodingTests.swift */,
@@ -409,6 +412,7 @@
 				0998F2DEC088C7391F942017 /* AppTestSupport.swift in Sources */,
 				0900A6E8CC7D7612F5A9D235 /* BackupCoordinatorTests.swift in Sources */,
 				21B1ADCE6904EC330B37F7A9 /* BibleReferenceLinkTests.swift in Sources */,
+				15747870B458307087A4A7FB /* CoreAliases.swift in Sources */,
 				C07835ED2EC5FEC946CB1F03 /* LibraryFileStoreTests.swift in Sources */,
 				5AAF7432F4F4FE1436A0BE77 /* LibraryImportServiceTests.swift in Sources */,
 				109D4F99345E19114F214F75 /* PDFKitTextExtractingTests.swift in Sources */,
