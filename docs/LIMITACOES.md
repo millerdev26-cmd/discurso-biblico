@@ -36,12 +36,14 @@ com Xcode. Portanto:
 workflow `.github/workflows/ios.yml` roda num runner macOS do GitHub Actions,
 gera o projeto com o XcodeGen, compila o alvo iOS e executa os 81 testes do
 app (inclusive os 27 que só existem na Apple), além do núcleo em Linux e
-macOS. O que continua exigindo um Mac (ou Mac alugado com acesso remoto) é a
-verificação **na tela**: simulador interativo e aparelho físico (instalação
-em iPhone exige Xcode ou TestFlight com conta de desenvolvedor). O Xcode em
-si **não** roda em Linux — não existe instalação oficial, e emulação de macOS
-viola a licença da Apple; veja as opções na seção 3 do
-[`App/README.md`](../App/README.md).
+macOS. O projeto Xcode também **já vem gerado e commitado**
+(`App/DiscursoBiblico.xcodeproj`, com o XcodeGen 2.46 rodando no Linux). O que
+continua exigindo um Mac (ou Mac alugado com acesso remoto) é a verificação
+**na tela**: simulador interativo e aparelho físico (instalação em iPhone
+exige Xcode ou TestFlight com conta de desenvolvedor — ou o xtool, que
+também depende do `Xcode.xip` da Apple). O Xcode em si **não** roda em Linux —
+não existe instalação oficial, e emulação de macOS viola a licença da Apple;
+veja as opções na seção 3 do [`App/README.md`](../App/README.md).
 
 ## 2. Formatos de arquivo
 

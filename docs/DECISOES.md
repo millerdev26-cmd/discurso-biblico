@@ -260,12 +260,21 @@ por `Scripts/make_fixtures.py` — nada de conteúdo de terceiros nos testes.
 
 ## 19. Projeto iOS descrito em texto (`XcodeGen`)
 
-**Decisão.** `App/project.yml` é a fonte da verdade do projeto; o
-`.xcodeproj` não é versionado. O arquivo também documenta como criar o
-projeto manualmente no Xcode, sem XcodeGen.
+**Decisão.** `App/project.yml` é a fonte da verdade do projeto. O
+`.xcodeproj` gerado **também é versionado**, por conveniência: qualquer Mac
+abre e compila sem instalar nada. Quem editar o YAML regenera
+(`xcodegen generate`) — inclusive **em Linux**: o XcodeGen 2.46 foi compilado
+(`swift build -c release`) e executado nesta máquina; a geração não exige Mac.
+O arquivo também documenta como criar o projeto manualmente no Xcode, sem
+XcodeGen.
 
-**Por quê.** Projetos `.xcodeproj` são difíceis de revisar e de mesclar; o YAML
-mantém tudo legível e reproduzível.
+**Por quê.** Projetos `.xcodeproj` são difíceis de revisar e de mesclar, então
+o YAML continua sendo a origem; mas como o alvo iOS ainda não pôde ser
+compilado aqui, deixar o projeto pronto reduz o atrito de quem for fazer a
+primeira compilação (basta abrir).
+
+**Consequência.** Duas cópias em jogo: edições manuais no Xcode são
+sobrescritas na próxima geração; a regra é editar `project.yml`.
 
 ## 20. Preview e recuperação de armazenamento
 
@@ -277,3 +286,29 @@ consumidos.
 
 **Por quê.** Recuperação antes de falhar: o usuário prefere um app que abre
 com aviso a um que não abre. Nada é apagado sem ação explícita.
+
+## 21. Verificação sem Mac: projeto gerado no Linux + CI macOS; xtool avaliado
+
+**Decisão.** A compilação do alvo iOS é fechada na nuvem, num runner macOS do
+GitHub Actions (`.github/workflows/ios.yml`): a cada push ele gera o projeto,
+compila para o simulador e roda os 81 testes do app (inclusive os 27 de
+SwiftData/UIKit/PDFKit), mais o núcleo em Linux e macOS, guardando o
+`xcresult` como artefato. O `.xcodeproj` também é gerado no próprio Linux
+(decisão 19). O `xtool` (substituto do Xcode para Linux, verificado rodando
+nesta máquina — AppImage 1.22.2) fica registrado como caminho **opcional**
+para compilar/instalar sem Mac, mas não é adotado por padrão.
+
+**Por quê.**
+- O Xcode **não existe** fora do macOS; o SDK do iOS é distribuído dentro do
+  Xcode e licenciado para produtos Apple. Emular macOS viola a licença.
+- O runner macOS é gratuito para repositórios públicos e executa exatamente o
+  mesmo `xcodebuild test` de um Mac (evidência por arquivo/linha em caso de
+  erro), sem baixar 10 GB nem depender de conta Apple.
+- O `xtool` exige: conta Apple ID (login interativo), **`Xcode.xip`** (~10 GB,
+  developer.apple.com) para extrair o SDK Darwin, toolchain Swift 6.4 e o app
+  convertido para o formato SwiftPM dele. Vale o esforço quando o objetivo
+  for instalar num iPhone físico sem Mac — não para validar compilação.
+
+**Consequência.** O que a nuvem **não** cobre continua sendo a verificação na
+tela (simulador interativo/aparelho): permanece no checklist do
+`App/README.md` e em [`LIMITACOES.md`](LIMITACOES.md).

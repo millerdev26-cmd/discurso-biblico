@@ -26,9 +26,13 @@ O projeto é organizado em duas camadas:
 > XcodeGen, compila o aplicativo e executa **todos** os testes num runner
 > macOS do GitHub Actions — inclusive os 27 exclusivos de Apple
 > (SwiftData/UIKit/PDFKit) que nunca rodaram em Linux. É o caminho para
-> concluir a compilação sem possuir um Mac. O Xcode em si não pode ser
-> instalado em Linux (o SDK do iOS é licenciado apenas para macOS); veja as
-> opções em [`App/README.md`](App/README.md).
+> concluir a compilação sem possuir um Mac. O projeto Xcode também **já vem
+> gerado** no repositório (`App/DiscursoBiblico.xcodeproj`, com o XcodeGen
+> 2.46 compilado e executado no próprio Linux), pronto para abrir em qualquer
+> Mac. O Xcode em si não roda em Linux; para compilar localmente existe o
+> [xtool](https://github.com/xtool-org/xtool) (que, porém, exige baixar o
+> `Xcode.xip` da Apple). Veja as três opções em
+> [`App/README.md`](App/README.md), seção 3.
 
 ---
 

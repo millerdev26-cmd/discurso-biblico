@@ -96,10 +96,35 @@ interface — é a única forma de “ver” o app sem ter o Mac em casa.
 
 ### c. Mac emprestado — se for só abrir e rodar
 
-Gere o projeto na seção 2 (`xcodegen generate`) ou crie à mão pelos 4 passos
-descritos ali; depois é `⌘B` e `⌘U`. Para instalar num iPhone físico, o Xcode
-cuida da assinatura com um Apple ID comum (grátis, 7 dias) ou conta de
-desenvolvedor.
+O projeto **já está gerado no repositório** (`App/DiscursoBiblico.xcodeproj`, criado
+com o XcodeGen 2.46 e commitado): em qualquer Mac, é só abrir e `⌘B`/`⌘U`.
+Se você editar `project.yml`, regenere no Mac com
+`brew install xcodegen && xcodegen generate` (a versão Linux do XcodeGen
+também funciona: `swift build -c release` no repositório do XcodeGen).
+
+### d. xtool — compilar no próprio Linux (experimental)
+
+O [xtool](https://github.com/xtool-org/xtool) é um "substituto do Xcode"
+aberto que compila, assina e **instala** apps iOS direto do Linux — mas
+atenção: ele **não dispensa o SDK da Apple**. O `xtool setup` exige:
+
+1. uma conta Apple ID (login interativo; há modo API Key para conta paga);
+2. o **`Xcode.xip`** baixado de
+   [developer.apple.com/download/all](https://developer.apple.com/download/all/?q=Xcode)
+   (~10 GB), do qual o xtool extrai o SDK do iOS (`swift sdk list` → `darwin`);
+3. o toolchain **Swift 6.4** para Linux (swift.org) e o `usbmuxd` (para
+   aparelho físico).
+
+Feito isso, o xtool compila nosso `DiscursoCore` e as fontes do app (é
+possível apontar o pacote local) e instala num iPhone por USB — sem Mac.
+O ponto sensível: o app é um projeto Xcode (nosso `project.yml`), enquanto o
+xtool trabalha no formato SwiftPM; a adaptação seria um `Package.swift` do
+app com os mesmos fontes. E há uma ressalva legal a considerar: o SDK
+continua licenciado pela Apple para uso em produtos Apple — extrair e usar o
+SDK fora do macOS é área cinzenta (o xtool tem 11,6 mil estrelas e segue
+publicado, mas a decisão é sua). Para **validar compilação e testes**, o
+caminho (a) já resolve de graça; o xtool vale a pena pelo passo de instalar
+num iPhone físico.
 
 > **O que não funciona:** instalar o Xcode em Linux (não existe), Darling
 > (não roda o Xcode), máquinas virtuais de macOS (infração de licença) e

@@ -145,6 +145,7 @@ restaurar ──► BackupCoordinator.inspect (resumo, sem tocar nos dados)
 | Texto do proferimento (faixas, marcações, links, temas) | `PresentationTextBuilderTests` | Apple (Xcode) | 12 |
 | Extração de PDF com PDFKit | `PDFKitTextExtractingTests` | Apple (Xcode) | 5 |
 | Sintaxe de todos os arquivos do app | `parse_check_app.sh` | Qualquer | 47 arquivos |
+| Geração do projeto Xcode | `xcodegen generate` (XcodeGen 2.46) | Linux/macOS | 1 projeto |
 
 Comandos:
 
@@ -153,6 +154,8 @@ swift test                     # 160 testes do núcleo
 Scripts/verify_app_logic.sh    # 54 testes do app em Linux
 Scripts/parse_check_app.sh     # sintaxe
 # no macOS: xcodebuild test …  # + 27 testes e o app inteiro
+# sem Mac: .github/workflows/ios.yml roda o xcodebuild test acima
+#          num runner macOS do GitHub Actions a cada push
 ```
 
 ## 5. Convenções do código
