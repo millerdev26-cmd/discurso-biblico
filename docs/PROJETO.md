@@ -62,7 +62,7 @@ específico da Apple fica no app, atrás de protocolos do núcleo
 
 | Caminho | Conteúdo |
 | --- | --- |
-| `Tests/DiscursoCoreTests/` | 160 testes do núcleo + `Fixtures/` (EPUB, DEFLATE, WOL, biblioteca) |
+| `Tests/DiscursoCoreTests/` | 168 testes do núcleo + `Fixtures/` (EPUB, DEFLATE, WOL, biblioteca) |
 | `App/DiscursoBiblicoTests/` | 81 testes do app (54 rodam em Linux; 27 exigem Apple) |
 | `Scripts/make_fixtures.py` | Gera as fixtures sintéticas |
 | `Scripts/verify_app_logic.sh` | Pacote SwiftPM temporário com a lógica do app que roda fora da Apple |
@@ -136,26 +136,28 @@ restaurar ──► BackupCoordinator.inspect (resumo, sem tocar nos dados)
 | Exportação TXT/MD/HTML e backup | `ExportBackupTests` | Linux | 18 |
 | Importação, indexação, pesquisa local | `ImportServiceTests` | Linux | 33 |
 | Pesquisa (provedores, cache, histórico, política) | `ResearchTests` | Linux | 23 |
+| Marcações em linha (ênfase, pausas, notas, resumo) | `InlineMarkupTests` | Linux | 8 |
 | Codificação dos registros do SwiftData | `PayloadCodingTests` | Linux | 9 |
 | Ligações `discursoref://` | `BibleReferenceLinkTests` | Linux | 11 |
 | Arquivos da biblioteca | `LibraryFileStoreTests` | Linux | 8 |
 | Importação no app (lote, duplicados, DRM, avisos) | `LibraryImportServiceTests` | Linux | 17 |
 | Backup no app (exportar, inspecionar, restaurar) | `BackupCoordinatorTests` | Linux | 9 |
-| Registros SwiftData (CRUD, pastas, índices, perfis, histórico) | `SwiftDataRepositoriesTests` | Apple (Xcode) | 10 |
-| Texto do proferimento (faixas, marcações, links, temas) | `PresentationTextBuilderTests` | Apple (Xcode) | 12 |
-| Extração de PDF com PDFKit | `PDFKitTextExtractingTests` | Apple (Xcode) | 5 |
-| Sintaxe de todos os arquivos do app | `parse_check_app.sh` | Qualquer | 47 arquivos |
+| Registros SwiftData (CRUD, pastas, índices, perfis, histórico) | `SwiftDataRepositoriesTests` | Apple (simulador, CI) | 10 |
+| Texto do proferimento (faixas, marcações, links, temas) | `PresentationTextBuilderTests` | Apple (simulador, CI) | 12 |
+| Extração de PDF com PDFKit | `PDFKitTextExtractingTests` | Apple (simulador, CI) | 5 |
+| Sintaxe de todos os arquivos do app | `parse_check_app.sh` | Qualquer | 49 arquivos |
 | Geração do projeto Xcode | `xcodegen generate` (XcodeGen 2.46) | Linux/macOS | 1 projeto |
+| Aplicativo iOS: compilação + 81 testes no simulador | `xcodebuild` (CI) | macOS (GitHub Actions) | 1 job |
 
 Comandos:
 
 ```bash
-swift test                     # 160 testes do núcleo
+swift test                     # 168 testes do núcleo
 Scripts/verify_app_logic.sh    # 54 testes do app em Linux
 Scripts/parse_check_app.sh     # sintaxe
 # no macOS: xcodebuild test …  # + 27 testes e o app inteiro
 # sem Mac: .github/workflows/ios.yml roda o xcodebuild test acima
-#          num runner macOS do GitHub Actions a cada push
+#          num runner macOS do GitHub Actions a cada push (já em verde)
 ```
 
 ## 5. Convenções do código

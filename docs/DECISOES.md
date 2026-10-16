@@ -229,14 +229,15 @@ sistema, sem rede nem serviços externos; para ao sair da tela.
 **Por quê.** Ajuda a revisar o texto e a estimar o ritmo, sem custo nem
 privacidade em risco. É complementar ao modo de proferimento, não o substitui.
 
-## 17. Testes: 160 no núcleo, 54 no app (Linux), 27 no app (Apple)
+## 17. Testes: 168 no núcleo, 54 no app (Linux), 27 no app (Apple)
 
 **Decisão.** Toda regra tem teste no nível em que pode rodar:
-- núcleo (Linux): `swift test` — 160;
+- núcleo (Linux e macOS): `swift test` — 168;
 - lógica do app independente de Apple (Linux): `Scripts/verify_app_logic.sh`
   — 54;
-- persistência SwiftData e UIKit/PDFKit: executados no Xcode/macOS — 27;
-- sintaxe de todos os arquivos do app: `Scripts/parse_check_app.sh`.
+- persistência SwiftData e UIKit/PDFKit: executados no **simulador do iOS**
+  pelo CI macOS — 27 (81 no total, dentro do simulador);
+- sintaxe de todos os arquivos do app: `Scripts/parse_check_app.sh` — 49.
 
 **Por quê.** O ambiente de desenvolvimento deste trabalho é Linux; seria
 desonesto declarar “compila no iPhone” sem poder rodar o Xcode. A verificação
@@ -282,7 +283,27 @@ aparecia na análise sintática):
   `CGFloat.greatestFiniteMagnitude`);
 - `UIApplication.open(url)` dentro de contexto `async` resolve para a variante
   assíncrona (ponte automática do completion handler) e exige `await`; os
-  pontos em contexto assíncrono passaram a usar a variante síncrona explícita.
+  pontos em contexto assíncrono passaram a usar a variante síncrona explícita;
+- o mesmo `LibraryItem` ambíguo também derrubava o módulo de testes do
+  **núcleo no macOS** (no Xcode, o `XCTest` deixa `DeveloperToolsSupport` no
+  escopo): apelido equivalente em `Tests/DiscursoCoreTests/CoreAliases.swift`;
+- `SpeechRecord.init(speech:)` chamava `applyIndexColumns` antes de inicializar
+  todas as colunas (a inicialização definitiva não aceita isso): o `init`
+  passou a atribuir todas as colunas diretamente;
+- `PresentationViewModel.init` lia `self.preferences` antes de inicializar
+  `session` (mesmo tipo de erro): as preferências saneadas viraram variável
+  local usada na sessão;
+- **defeito de lógica no núcleo:** os segmentos do `InlineMarkup` (ênfase,
+  notas privadas e detalhes de indicação) eram montados a partir do texto
+  *normalizado* — sem acentos e em minúsculas — então a apresentação e a
+  exportação imprimiam “joao 3:16” no lugar de “João 3:16”. Corrigido na raiz
+  (o texto exibido agora sai do texto original) e coberto por 8 testes novos
+  em `Tests/DiscursoCoreTests/InlineMarkupTests.swift` — arquivo que não
+  existia, e por isso o defeito passou;
+- no modo de proferimento, o bloco de **nota do apresentador** era impresso
+  como se fosse indicação (`[Marcação]`) em vez do texto da nota; agora sai
+  “Nota: …”, igual à exportação (e o parágrafo marcado como nota recebe o
+  mesmo rótulo).
 
 ## 18. Fixtures sintéticas
 
@@ -341,6 +362,15 @@ para compilar/instalar sem Mac, mas não é adotado por padrão.
   developer.apple.com) para extrair o SDK Darwin, toolchain Swift 6.4 e o app
   convertido para o formato SwiftPM dele. Vale o esforço quando o objetivo
   for instalar num iPhone físico sem Mac — não para validar compilação.
+
+**Resultado (16/10/2026).** O caminho foi percorrido de ponta a ponta:
+repositório público, 8 rodadas de CI até o verde. A primeira compilação real
+encontrou **16 defeitos** que a análise sintática não via — inclusive dois de
+**lógica** que só a execução revelava (marcações em linha saindo sem acentos e
+a nota do apresentador) —, todos listados na decisão 17. Estado final do CI:
+núcleo com 168 testes em Linux e macOS, aplicativo compilado e **81 testes
+passando no simulador** (iPhone 16, Xcode 16.4), com o `xcresult` guardado
+como artefato.
 
 **Consequência.** O que a nuvem **não** cobre continua sendo a verificação na
 tela (simulador interativo/aparelho): permanece no checklist do

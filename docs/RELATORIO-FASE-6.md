@@ -71,16 +71,38 @@ do macOS e documentar tudo — inclusive o que não pôde ser verificado.
 | `swift test` | **160 testes, 0 falhas** |
 | `Scripts/verify_app_logic.sh` | **54 testes, 0 falhas** |
 | `Scripts/parse_check_app.sh` | **47 arquivos, 0 erros de sintaxe** |
-| `xcodebuild test` (macOS) | **Pendente** — exige Xcode (27 testes + compilação do alvo) |
+| `xcodebuild test` (macOS) | **Pendente** — exigia Xcode (27 testes + compilação do alvo); concluído na atualização abaixo |
+
+## Atualização (16/10/2026) — verificação na nuvem concluída
+
+| Comando | Resultado |
+| --- | --- |
+| `swift test` | **168 testes, 0 falhas** (Linux e macOS) |
+| `Scripts/verify_app_logic.sh` | **54 testes, 0 falhas** |
+| `Scripts/parse_check_app.sh` | **49 arquivos, 0 erros de sintaxe** |
+| `xcodebuild test` (runner macOS do GitHub Actions, simulador iPhone 16) | **81 testes, 0 falhas** + aplicativo compilado |
+
+A primeira compilação real encontrou **16 defeitos** que a análise sintática não
+via — inclusive dois de lógica: as marcações em linha perdiam acentos
+(“joao 3:16”) e a nota do apresentador não aparecia no modo de proferimento.
+Todos foram corrigidos e estão listados na decisão 17 de
+[`DECISOES.md`](../docs/DECISOES.md); os 8 testes novos das marcações
+(`InlineMarkupTests`) também estão no CI. O que continua pendente é a
+verificação **na tela** (simulador interativo) e em aparelho real — veja
+[`LIMITACOES.md`](../docs/LIMITACOES.md) (item 1) e o checklist da seção 5
+deste documento.
 
 ## Limitações desta fase
 - O backup não leva os arquivos da biblioteca (só os registros e anotações).
 - DOCX/JWPUB continuam fora da exportação/importação de conteúdo.
-- A compilação e a execução no iOS permanecem a maior lacuna — o que fazer
-  está em `docs/LIMITACOES.md` (item 1) e no checklist de `App/README.md`.
+- A compilação no iOS foi **concluída** na nuvem (ver atualização acima); o
+  que permanece é a verificação na tela e em aparelho — `docs/LIMITACOES.md`
+  (item 1) e o checklist de `App/README.md`.
 
 ## Próximo passo recomendado
-Abrir o projeto no Mac conforme `App/README.md`, rodar `xcodebuild test` e
-seguir o checklist na ordem; as áreas de maior risco (SwiftData,
-`PresentationTextView`, `SpeechPDFRenderer`, `SpeechReaderService`) são as
-primeiras a verificar.
+Verificação **na tela**: abrir o projeto num Mac (ou Mac alugado com acesso
+remoto), rodar `xcodebuild test` e seguir o checklist na ordem; as áreas de
+maior risco no uso real (SwiftData, `PresentationTextView` — TextKit 1 —,
+`SpeechPDFRenderer`, `SpeechReaderService`) são as primeiras a verificar.
+Para instalar num iPhone sem Mac, decidir entre TestFlight (conta de
+desenvolvedor) e xtool (ver `App/README.md`, seção 3).

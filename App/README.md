@@ -56,7 +56,7 @@ iOS faz parte do Xcode e é licenciado apenas para Apple; emular o macOS viola
 a licença). Ainda assim, a compilação e os testes podem ser fechados sem
 possuir um Mac. Três caminhos, do mais barato ao mais caro:
 
-### a. GitHub Actions (grátis) — recomendado
+### a. GitHub Actions (grátis) — foi assim que este projeto fechou a compilação
 
 O repositório inclui o workflow [`.github/workflows/ios.yml`](../.github/workflows/ios.yml).
 A cada push, num runner macOS do GitHub Actions, ele:
@@ -68,7 +68,14 @@ A cada push, num runner macOS do GitHub Actions, ele:
 4. roda também o núcleo (`swift test`) em Linux **e** macOS;
 5. guarda o `xcresult` como artefato para baixar.
 
-Para publicar (o repositório local **já está com os dois commits feitos**):
+**Resultado neste repositório** (`millerdev26-cmd/discurso-biblico`, isolado,
+`Actions ▸ iOS`): **CI verde** — aplicativo compilado e **81 testes passando**
+no simulador (iPhone 16, Xcode 16.4, iOS 26.2) e núcleo com **168 testes** em
+Linux e macOS. A primeira compilação real encontrou 16 defeitos que a análise
+sintática não via — inclusive dois de lógica —, todos listados na decisão 17 de
+[`docs/DECISOES.md`](../docs/DECISOES.md).
+
+Para publicar uma cópia nova (passos já executados aqui):
 
 ```bash
 # 1. GitHub CLI (Pop!_OS/Ubuntu)
@@ -84,8 +91,9 @@ git push -u origin main
 ```
 
 Notas:
-- **Autoria dos commits:** ainda está como “Discurso Biblico (local)”. Para
-  corrigir antes de publicar (reescreve os dois commits locais):
+- **Autoria dos commits:** está como “Discurso Biblico (local)”. Para vincular
+  os commits à sua conta do GitHub (reescreve o histórico e exige
+  `git push --force`, inofensivo em repositório recém-criado):
   `git config user.name "Seu Nome" && git config user.email "voce@exemplo.com"
   && git rebase --root --exec 'git commit --amend --reset-author --no-edit'`.
 - **Público × privado:** runners macOS são gratuitos em repositórios

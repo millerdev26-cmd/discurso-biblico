@@ -10,29 +10,12 @@ O projeto é organizado em duas camadas:
 
 | Camada | Onde | O que contém | Como é verificada |
 | --- | --- | --- | --- |
-| **Núcleo** (`DiscursoCore`) | `Sources/DiscursoCore` | Todos os modelos, persistência, editor, referências bíblicas, EPUB, indexação/pesquisa local, importação/exportação, backup, pesquisa externa e rolagem automática — em Swift puro, sem dependências de terceiros | `swift test` (**160 testes, 0 falhas**, roda em Linux e macOS) |
-| **Aplicativo** (iOS) | `App/DiscursoBiblico` | SwiftUI, SwiftData, PDFKit, AVFoundation: telas, navegação, armazenamento dos registros, importação de arquivos, PDF e leitura por voz | `Scripts/verify_app_logic.sh` (**54 testes**, roda em Linux) + `Scripts/parse_check_app.sh`; a compilação/execução do alvo iOS exige Xcode (ver [`App/README.md`](App/README.md)) |
+| **Núcleo** (`DiscursoCore`) | `Sources/DiscursoCore` | Todos os modelos, persistência, editor, referências bíblicas, EPUB, indexação/pesquisa local, importação/exportação, backup, pesquisa externa e rolagem automática — em Swift puro, sem dependências de terceiros | `swift test` (**168 testes, 0 falhas**, roda em Linux e macOS) |
+| **Aplicativo** (iOS) | `App/DiscursoBiblico` | SwiftUI, SwiftData, PDFKit, AVFoundation: telas, navegação, armazenamento dos registros, importação de arquivos, PDF e leitura por voz | `Scripts/verify_app_logic.sh` (**54 testes**, Linux) + `Scripts/parse_check_app.sh` (**49 arquivos**); compilação real e **81 testes no simulador** pelo CI macOS (`.github/workflows/ios.yml`) |
 
-> **Estado atual (honesto):** o núcleo compila e é testado neste ambiente. A
-> camada de aplicativo foi escrita por completo, tem testes próprios para toda
-> a lógica independente de Apple e passou pela análise sintática de todos os
-> 47 arquivos — mas **ainda não foi compilada no Xcode**, porque isso exige um
-> Mac. O que falta, exatamente, está em
-> [`docs/LIMITACOES.md`](docs/LIMITACOES.md) e o passo a passo de verificação
-> em [`App/README.md`](App/README.md).
+> **Estado atual (verificado):** o núcleo compila e passa em **168 testes** em Linux e macOS. A camada de aplicativo **compila e passa nos 81 testes** no simulador do iOS (iPhone 16, Xcode 16.4, iOS 26.2). Como este ambiente de desenvolvimento não tem Mac, a compilação foi fechada na **nuvem** (GitHub Actions, `.github/workflows/ios.yml`), que roda o mesmo `xcodebuild test` de um Mac a cada push. O que a nuvem **não** cobre — comportamento na tela, aparelho real, vozes do sistema, PDFKit em uso — está listado em [`docs/LIMITACOES.md`](docs/LIMITACOES.md) e no checklist item por item de [`App/README.md`](App/README.md).
 >
-> **Sem um Mac?** O repositório inclui um workflow de CI
-> (`.github/workflows/ios.yml`): a cada push, ele gera o projeto com o
-> XcodeGen, compila o aplicativo e executa **todos** os testes num runner
-> macOS do GitHub Actions — inclusive os 27 exclusivos de Apple
-> (SwiftData/UIKit/PDFKit) que nunca rodaram em Linux. É o caminho para
-> concluir a compilação sem possuir um Mac. O projeto Xcode também **já vem
-> gerado** no repositório (`App/DiscursoBiblico.xcodeproj`, com o XcodeGen
-> 2.46 compilado e executado no próprio Linux), pronto para abrir em qualquer
-> Mac. O Xcode em si não roda em Linux; para compilar localmente existe o
-> [xtool](https://github.com/xtool-org/xtool) (que, porém, exige baixar o
-> `Xcode.xip` da Apple). Veja as três opções em
-> [`App/README.md`](App/README.md), seção 3.
+> **Sem um Mac?** Foi exatamente assim que o alvo iOS foi compilado e testado neste projeto: o workflow `.github/workflows/ios.yml` gera o projeto com o XcodeGen, compila o aplicativo e executa **todos** os testes num runner macOS do GitHub Actions — inclusive os 27 exclusivos de Apple (SwiftData/UIKit/PDFKit) que não rodam em Linux. O projeto Xcode também **já vem gerado** no repositório (`App/DiscursoBiblico.xcodeproj`, com o XcodeGen 2.46 compilado e executado no próprio Linux), pronto para abrir em qualquer Mac. O Xcode em si não roda em Linux; para compilar localmente existe o [xtool](https://github.com/xtool-org/xtool) (que, porém, exige baixar o `Xcode.xip` da Apple). Veja as três opções em [`App/README.md`](App/README.md), seção 3.
 
 ---
 
@@ -104,7 +87,7 @@ O projeto é organizado em duas camadas:
 ```
 Package.swift                  Pacote SwiftPM `DiscursoCore` (núcleo, sem dependências)
 Sources/DiscursoCore/          Modelos, persistência, editor, EPUB, Bíblia, pesquisa…
-Tests/DiscursoCoreTests/       Suíte do núcleo (160 testes) + fixtures sintéticas
+Tests/DiscursoCoreTests/       Suíte do núcleo (168 testes) + fixtures sintéticas
 App/DiscursoBiblico/           Aplicativo iOS (SwiftUI + SwiftData + PDFKit + AVFoundation)
 App/DiscursoBiblicoTests/      Testes do aplicativo (alguns exigem Apple, outros rodam em Linux)
 App/project.yml                Especificação XcodeGen do projeto iOS
@@ -123,7 +106,7 @@ docs/RELATORIO-FASE-1..6.md    Relatórios por fase (entregas, testes, limites)
 ## Como verificar (Linux ou macOS)
 
 ```bash
-# 1. Suíte do núcleo — 160 testes
+# 1. Suíte do núcleo — 168 testes
 swift test
 
 # 2. Lógica do aplicativo que não depende de Apple — 54 testes
@@ -137,9 +120,10 @@ Para compilar e rodar o aplicativo iOS (macOS + Xcode 16+, opcionalmente
 XcodeGen), siga [`App/README.md`](App/README.md); lá está a lista do que
 verificar no aparelho/simulador, item por item.
 
-Sem um Mac, use o caminho da nuvem: publique o repositório no GitHub e o
-workflow `.github/workflows/ios.yml` compila e testa tudo num runner macOS do
-GitHub Actions (`Actions ▸ iOS`); veja o passo a passo em
+Sem um Mac, use o caminho da nuvem — **já usado neste projeto, com o CI verde**:
+o repositório está publicado no GitHub e o workflow
+`.github/workflows/ios.yml` compila e testa tudo num runner macOS do GitHub
+Actions a cada push (`Actions ▸ iOS`); veja o passo a passo em
 [`App/README.md`](App/README.md), seção 3.
 
 ---

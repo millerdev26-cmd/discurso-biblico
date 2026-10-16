@@ -10,29 +10,36 @@ referência para decidir o que fazer antes de publicar.
 
 O alvo iOS foi escrito por completo e passou por:
 
-- análise sintática de todos os 47 arquivos Swift (`Scripts/parse_check_app.sh`);
+- análise sintática de todos os 49 arquivos Swift (`Scripts/parse_check_app.sh`);
 - testes reais da lógica independente de Apple — 54 testes
   (`Scripts/verify_app_logic.sh`), incluindo codificação dos registros,
-  ligações de referências, armazenamento de arquivos, importação e backup.
+  ligações de referências, armazenamento de arquivos, importação e backup;
+- **compilação real e execução dos 81 testes no simulador** (iPhone 16,
+  iOS 26.2, Xcode 16.4), na nuvem, pelo workflow
+  `.github/workflows/ios.yml` (GitHub Actions, runner macOS): a cada push,
+  `xcodebuild build-for-testing` + `test-without-building` e o núcleo em
+  Linux e macOS (168 testes em cada). O `xcresult` fica guardado como
+  artefato do workflow.
 
-Mas **o alvo iOS nunca foi compilado nem executado**, porque isso exige um Mac
-com Xcode. Portanto:
+O que **ainda não está verificado**, porque exige um Mac com simulador
+interativo ou um aparelho real:
 
-- erros de compilação em APIs que só existem na Apple (SwiftUI, SwiftData,
-  PDFKit, AVFoundation, UIKit) são possíveis;
-- os 27 testes que exigem Apple (`SwiftDataRepositoriesTests`,
-  `PresentationTextBuilderTests`, `PDFKitTextExtractingTests`) **nunca foram
-  executados** em lugar nenhum;
 - nada foi medido em aparelho: desempenho da rolagem automática, precisão da
-  medição de seções, comportamento do PDFKit, vozes do sistema, brilho da tela.
+  medição de seções, PDFKit renderizando/salvando o arquivo de verdade, vozes
+  do sistema (AVSpeechSynthesizer), brilho da tela, folha de Compartilhar no
+  iPad;
+- nenhum fluxo foi percorrido à mão no simulador (toques, gestos, navegação
+  entre abas), embora toda a lógica com teste automatizado passe;
+- nada foi instalado num iPhone/iPad: instalar exige Xcode, TestFlight com
+  conta de desenvolvedor ou xtool (que depende do `Xcode.xip` da Apple).
 
-**Antes de considerar o projeto pronto:** siga o checklist do
-[`App/README.md`](../App/README.md), na ordem (“Primeiro: compilar e abrir”).
-Áreas de maior risco, em ordem: SwiftData (`@ModelActor`, `#Predicate`),
-`PresentationTextView` (TextKit 1), `SpeechPDFRenderer`,
+**Próximo passo:** siga o checklist do [`App/README.md`](../App/README.md),
+na ordem (“Primeiro: compilar e abrir”). Áreas de maior risco no uso real,
+em ordem: SwiftData (`@ModelActor`, `#Predicate`), `PresentationTextView`
+(TextKit 1 e a medição dos tópicos), `SpeechPDFRenderer`,
 `SpeechReaderService` e a folha de Compartilhar no iPad.
 
-**Sem um Mac, a compilação e os testes podem ser fechados na nuvem:** o
+**Sem um Mac, a compilação e os testes já estão fechados na nuvem:** o
 workflow `.github/workflows/ios.yml` roda num runner macOS do GitHub Actions,
 gera o projeto com o XcodeGen, compila o alvo iOS e executa os 81 testes do
 app (inclusive os 27 que só existem na Apple), além do núcleo em Linux e
