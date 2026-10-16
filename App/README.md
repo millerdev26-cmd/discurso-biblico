@@ -68,18 +68,31 @@ A cada push, num runner macOS do GitHub Actions, ele:
 4. roda também o núcleo (`swift test`) em Linux **e** macOS;
 5. guarda o `xcresult` como artefato para baixar.
 
-Para publicar (o repositório local já está com o git iniciado):
+Para publicar (o repositório local **já está com os dois commits feitos**):
 
 ```bash
-git add -A
-git commit -m "Discurso Bíblico — estado atual"
-# opção 1: GitHub CLI
+# 1. GitHub CLI (Pop!_OS/Ubuntu)
+sudo apt install gh
 gh auth login
+
+# 2. criar o repositório e enviar tudo
 gh repo create discurso-biblico --public --source=. --push
-# opção 2: crie o repositório no site e então:
+
+# sem o GitHub CLI: crie o repositório no site e então
 git remote add origin git@github.com:SEU-USUARIO/discurso-biblico.git
 git push -u origin main
 ```
+
+Notas:
+- **Autoria dos commits:** ainda está como “Discurso Biblico (local)”. Para
+  corrigir antes de publicar (reescreve os dois commits locais):
+  `git config user.name "Seu Nome" && git config user.email "voce@exemplo.com"
+  && git rebase --root --exec 'git commit --amend --reset-author --no-edit'`.
+- **Público × privado:** runners macOS são gratuitos em repositórios
+  **públicos**; em privados, cada execução consome ≈10 minutos do plano por
+  minuto real (o Free dá ≈200 min/mês de macOS — uma ou duas execuções).
+  Dá para começar público e trocar para privado depois (Settings ▸ General ▸
+  Danger Zone), ciente do custo.
 
 Acompanhe em **Actions ▸ iOS**. O log mostra o mesmo `xcodebuild test` que
 você rodaria num Mac — cada erro de compilação aparece com arquivo e linha.
