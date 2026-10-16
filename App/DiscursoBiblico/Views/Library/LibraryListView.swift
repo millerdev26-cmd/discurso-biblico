@@ -240,9 +240,6 @@ struct LibraryListView: View {
                             }
                             .padding(.vertical, 2)
                         }
-                        .simultaneousGesture(TapGesture().onEnded {
-                            Task { await model.noteOpened(item) }
-                        })
                     }
                 }
             } header: {
@@ -261,9 +258,9 @@ struct LibraryListView: View {
                 } label: {
                     itemRow(item)
                 }
-                .simultaneousGesture(TapGesture().onEnded {
-                    Task { await model.noteOpened(item) }
-                })
+                // Sem `simultaneousGesture` no link: ele chega a impedir a
+                // navegação da linha. A data de "última abertura" é gravada
+                // pelo leitor, ao abrir o material.
                 .swipeActions(edge: .leading, allowsFullSwipe: true) {
                     Button {
                         Task { await model.toggleFavorite(item) }

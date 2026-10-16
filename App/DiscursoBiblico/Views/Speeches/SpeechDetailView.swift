@@ -443,6 +443,10 @@ struct SpeechDetailView: View {
             model = SpeechDetailViewModel(repository: environment.speechRepository)
         }
         await model?.load(id: speechID)
+        // "Continuar de onde parei" na lista: registra aqui (ao abrir), e não
+        // com um gesto sobre o `NavigationLink` — que chegava a impedir a
+        // própria navegação da lista.
+        await environment.saveSettings { $0.lastOpenedSpeechID = speechID }
     }
 }
 

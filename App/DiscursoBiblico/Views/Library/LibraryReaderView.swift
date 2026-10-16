@@ -371,6 +371,9 @@ struct LibraryReaderView: View {
         pdfDocument = nil
         epubBook = nil
         plainText = nil
+        // Marca o material como aberto agora (a lista só lia a data; aqui é
+        // que sabemos que ele foi realmente aberto).
+        update { $0.lastOpenedAt = Date() }
 
         guard let fileURL = await environment.libraryRepository.fileURL(for: currentItem) else {
             loadErrorMessage = "O arquivo deste material não está mais no armazenamento do aplicativo. Importe-o novamente."

@@ -160,11 +160,9 @@ final class LibraryViewModel {
         }
     }
 
-    func noteOpened(_ item: LibraryItem) async {
-        guard var copy = await loadItem(id: item.id) else { return }
-        copy.lastOpenedAt = Date()
-        try? await repository.save(copy)
-    }
+    // A data de última abertura é gravada pelo leitor (ao abrir o material),
+    // e não pela lista: um gesto sobre o `NavigationLink` chegava a impedir a
+    // própria navegação da linha.
 
     func saveReadingPosition(_ item: LibraryItem, unitIndex: Int, fraction: Double, characterOffset: Int?) async {
         guard var copy = await loadItem(id: item.id) else { return }

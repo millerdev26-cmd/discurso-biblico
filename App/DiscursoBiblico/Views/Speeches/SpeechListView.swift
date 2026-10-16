@@ -164,6 +164,10 @@ struct SpeechListView: View {
 
     private func continueSection(_ target: SpeechSummary) -> some View {
         Section {
+            // Sem gestos adicionais: um `simultaneousGesture` sobre o
+            // `NavigationLink` chega a impedir a navegação no iOS (o toque
+            // registra o efeito colateral, mas a tela não abre). O registro
+            // de "último discurso aberto" acontece na tela de detalhe.
             NavigationLink {
                 SpeechDetailView(speechID: target.id, startsInPresentation: true)
             } label: {
@@ -187,11 +191,6 @@ struct SpeechListView: View {
                 }
                 .padding(.vertical, 4)
             }
-            .simultaneousGesture(TapGesture().onEnded {
-                Task {
-                    await environment.saveSettings { $0.lastOpenedSpeechID = target.id }
-                }
-            })
         }
     }
 
@@ -262,11 +261,6 @@ struct SpeechListView: View {
                 } label: {
                     row(summary)
                 }
-                .simultaneousGesture(TapGesture().onEnded {
-                    Task {
-                        await environment.saveSettings { $0.lastOpenedSpeechID = summary.id }
-                    }
-                })
                 .swipeActions(edge: .leading, allowsFullSwipe: true) {
                     Button {
                         Task { await model.toggleFavorite(summary) }
