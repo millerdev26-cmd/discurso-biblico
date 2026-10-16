@@ -152,9 +152,10 @@ struct PresentationTextBuilder {
             guard !block.items.isEmpty else { return "" }
             return block.items.map { "•  \(InlineMarkup.plainText($0))" }.joined(separator: "\n") + "\n"
         case .note:
-            let detail = block.cueDetail.map { ": \($0)" } ?? ""
-            let cueText = (block.cue?.displayName ?? "Marcação") + detail
-            return "[\(cueText)]\n"
+            // Nota do apresentador: o texto é o conteúdo da nota (a formatação
+            // de indicação é do bloco `.cue`). Igual à exportação: "Nota: ...".
+            let note = InlineMarkup.plainText(block.text)
+            return note.isEmpty ? "" : "Nota: \(note)\n"
         case .divider:
             return "· · ·\n"
         case .cue:
@@ -167,7 +168,10 @@ struct PresentationTextBuilder {
             if text.isEmpty { return reference + "\n" }
             return reference.isEmpty ? text + "\n" : "\(reference) — \(text)\n"
         case .paragraph:
-            return InlineMarkup.plainText(block.text) + "\n"
+            // Parágrafo marcado como nota do apresentador usa o mesmo rótulo da
+            // exportação, para o orador reconhecer o que é fala e o que é aviso.
+            let prefix = block.isPresenterNote ? "Nota: " : ""
+            return prefix + InlineMarkup.plainText(block.text) + "\n"
         }
     }
 

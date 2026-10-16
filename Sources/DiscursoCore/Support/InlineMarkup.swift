@@ -137,11 +137,17 @@ public enum InlineMarkup {
             // Observação privada: {nota: ...}
             if characters[index] == "{", let block = matchBracedBlock(at: index, characters: characters) {
                 let content = String(characters[block.contentRange])
+                // O texto exibido sai do **original**: o normalizado perde
+                // acentos e maiúsculas (ex.: {nota: Revisar João}). A palavra-chave
+                // continua sendo comparada no normalizado, sem acento.
+                let originalContent = foldedText
+                    .originalRange(foldedOffsets: block.contentRange)
+                    .map { String(text[$0]) } ?? content
                 let keyword = content.split(separator: ":", maxSplits: 1).first.map(String.init) ?? ""
                 let keywordFolded = PortugueseText.folded(keyword).trimmingCharacters(in: .whitespaces)
                 if keywordFolded == "nota" {
                     flushBuffer(upTo: index)
-                    let noteText = content.split(separator: ":", maxSplits: 1).dropFirst().first
+                    let noteText = originalContent.split(separator: ":", maxSplits: 1).dropFirst().first
                         .map { $0.trimmingCharacters(in: .whitespaces) } ?? ""
                     if let range = foldedText.originalRange(foldedOffsets: block.fullRange) {
                         segments.append(InlineSegment(text: noteText, range: range, isPrivateNote: true))
@@ -151,7 +157,7 @@ public enum InlineMarkup {
                 }
                 if let cue = cueDescriptor(forKeyword: keywordFolded) {
                     flushBuffer(upTo: index)
-                    let detail = content.split(separator: ":", maxSplits: 1).dropFirst().first
+                    let detail = originalContent.split(separator: ":", maxSplits: 1).dropFirst().first
                         .map { $0.trimmingCharacters(in: .whitespaces) }
                     if let range = foldedText.originalRange(foldedOffsets: block.fullRange) {
                         segments.append(InlineSegment(
@@ -174,10 +180,13 @@ public enum InlineMarkup {
             // Ênfase: *texto*
             if characters[index] == "*", let block = matchEmphasis(at: index, characters: characters) {
                 flushBuffer(upTo: index)
-                if let range = foldedText.originalRange(foldedOffsets: block.fullRange) {
+                // O conteúdo sai do original (sem perder acentos/maiúsculas);
+                // apenas os asteriscos ficam de fora.
+                if let fullRange = foldedText.originalRange(foldedOffsets: block.fullRange),
+                   let contentRange = foldedText.originalRange(foldedOffsets: block.contentRange) {
                     segments.append(InlineSegment(
-                        text: String(characters[block.contentRange]),
-                        range: range,
+                        text: String(text[contentRange]),
+                        range: fullRange,
                         isEmphasized: true
                     ))
                 }
