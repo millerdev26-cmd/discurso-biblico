@@ -460,6 +460,10 @@ struct SpeechListView: View {
     // MARK: Ações
 
     private func prepareModel() async {
+        // Aguarda a abertura do ambiente: as configurações (ordenação
+        // preferida) e a biblioteca precisam estar carregadas antes do
+        // primeiro carregamento da lista.
+        await environment.start()
         if model == nil {
             model = SpeechListViewModel(repository: environment.speechRepository)
             model?.sortOption = environment.settings.preferredSpeechSort

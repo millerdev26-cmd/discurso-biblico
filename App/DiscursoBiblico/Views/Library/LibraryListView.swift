@@ -418,6 +418,8 @@ struct LibraryListView: View {
     }
 
     private func prepareModel() async {
+        // Aguarda a abertura do ambiente antes do primeiro carregamento.
+        await environment.start()
         if model == nil {
             model = LibraryViewModel(
                 repository: environment.libraryRepository,

@@ -70,15 +70,30 @@ targets:
         GENERATE_INFOPLIST_FILE: YES
         PRODUCT_BUNDLE_IDENTIFIER: br.org.discursobiblico.tests
 
+  DiscursoBiblicoUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: DiscursoBiblicoUITests
+    dependencies:
+      - target: DiscursoBiblico
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: br.org.discursobiblico.uitests
+        TEST_TARGET_NAME: DiscursoBiblico
+
 schemes:
   DiscursoBiblico:
     build:
       targets:
         DiscursoBiblico: all
         DiscursoBiblicoTests: [test]
+        DiscursoBiblicoUITests: [test]
     run:
       config: Debug
     test:
       config: Debug
       targets:
         - DiscursoBiblicoTests
+        - DiscursoBiblicoUITests

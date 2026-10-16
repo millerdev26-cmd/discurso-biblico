@@ -72,17 +72,54 @@ jobs:
             -scheme DiscursoBiblico \
             -destination 'platform=iOS Simulator,name=iPhone 16' \
             -derivedDataPath .ci/DerivedData \
+            -only-testing:DiscursoBiblicoTests \
             -resultBundlePath .ci/TestResults.xcresult \
             CODE_SIGNING_ALLOWED=NO
 
+      - name: Testes de interface no simulador (com capturas de tela)
+        working-directory: App
+        timeout-minutes: 30
+        run: |
+          xcodebuild test-without-building \
+            -project DiscursoBiblico.xcodeproj \
+            -scheme DiscursoBiblico \
+            -destination 'platform=iOS Simulator,name=iPhone 16' \
+            -derivedDataPath .ci/DerivedData \
+            -only-testing:DiscursoBiblicoUITests \
+            -resultBundlePath .ci/InterfaceResults.xcresult \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Extrair as capturas de tela do resultado
+        if: always()
+        continue-on-error: true
+        working-directory: App
+        run: |
+          rm -rf .ci/Capturas
+          mkdir -p .ci/Capturas
+          xcrun xcresulttool export attachments \
+            --path .ci/InterfaceResults.xcresult \
+            --output-path .ci/Capturas
+          find .ci/Capturas -name '*.png' | sort
+
       - name: Testes do núcleo no macOS
         run: swift test
+
+      - name: Publicar as capturas de tela do simulador
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: capturas-simulador
+          path: App/.ci/Capturas
+          if-no-files-found: ignore
+          retention-days: 14
 
       - name: Guardar o resultado dos testes
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: xcresult
-          path: App/.ci/TestResults.xcresult
+          path: |
+            App/.ci/TestResults.xcresult
+            App/.ci/InterfaceResults.xcresult
           if-no-files-found: ignore
           retention-days: 14

@@ -52,7 +52,7 @@ final class AppEnvironment {
     private(set) var storageWarnings: [String] = []
     private(set) var isLoading = true
 
-    private var didStart = false
+    private var startTask: Task<Void, Never>?
 
     // MARK: Inicialização
 
@@ -171,13 +171,30 @@ final class AppEnvironment {
     // MARK: Ciclo de vida
 
     /// Carrega configurações, perfis e avisos. Chamado uma vez na abertura.
+    ///
+    /// As telas aguardam este mesmo trabalho (em vez de cada uma carregar os
+    /// dados por conta própria na frente das outras): assim nenhuma tela lê o
+    /// banco antes de o ambiente terminar de abrir.
     func start() async {
-        guard !didStart else { return }
-        didStart = true
-        defer { isLoading = false }
+        if let startTask {
+            await startTask.value
+            return
+        }
+        let task = Task { await self.performStart() }
+        startTask = task
+        await task.value
+    }
 
+    private func performStart() async {
         await loadSettingsAndProfiles()
+
+        // Dados de exemplo criados apenas pelos testes de interface (CI).
+        if DemoSeed.isRequested {
+            await DemoSeed.install(into: self)
+        }
+
         await collectStorageWarnings()
+        isLoading = false
     }
 
     /// Recarrega configurações e perfis (usado após restauração de backup).

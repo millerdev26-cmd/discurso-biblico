@@ -36,6 +36,20 @@
                ReferencedContainer = "container:DiscursoBiblico.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C17B6D94A1F4B43FE6318FE3"
+               BuildableName = "DiscursoBiblicoUITests.xctest"
+               BlueprintName = "DiscursoBiblicoUITests"
+               ReferencedContainer = "container:DiscursoBiblico.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -62,6 +76,17 @@
                BlueprintIdentifier = "B8E4E717912F21BF3BCA988E"
                BuildableName = "DiscursoBiblicoTests.xctest"
                BlueprintName = "DiscursoBiblicoTests"
+               ReferencedContainer = "container:DiscursoBiblico.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C17B6D94A1F4B43FE6318FE3"
+               BuildableName = "DiscursoBiblicoUITests.xctest"
+               BlueprintName = "DiscursoBiblicoUITests"
                ReferencedContainer = "container:DiscursoBiblico.xcodeproj">
             </BuildableReference>
          </TestableReference>
