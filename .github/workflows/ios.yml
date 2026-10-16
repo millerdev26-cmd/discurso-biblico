@@ -5,6 +5,13 @@
 # (inclusive os 27 que dependem de SwiftData/UIKit/PDFKit e que não rodam em
 # Linux), além do núcleo em Linux e no macOS.
 #
+# O runner macos-15 traz o Xcode 16.4 como padrão (SDK iOS 18), mas o
+# simulador instalado é o iOS 26. Na primeira rodada dos testes de interface,
+# essa mistura produziu toques que não chegavam ao aplicativo (o XCUITest
+# sintetizava o evento no lugar certo e a tela não reagia). Por isso o passo
+# "Selecionar o Xcode" escolhe o Xcode 26.x mais novo instalado no runner,
+# ficando na mesma geração do simulador.
+#
 # Requisitos: repositório no GitHub. Runners macOS são gratuitos para
 # repositórios públicos; em repositórios privados contam no limite do plano
 # (minutos de macOS valem 10x no plano Free).
@@ -41,10 +48,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Selecionar o Xcode (mesma geração do simulador)
+        run: |
+          # Ver a lista completa ajuda quando o runner muda de imagem.
+          ls /Applications | grep -i '^Xcode' || true
+          for versao in 26.6 26.5 26.4.1 26.3 26.2 26.1.1 26.0.1 26.0; do
+            if [ -d "/Applications/Xcode_${versao}.app" ]; then
+              sudo xcode-select -s "/Applications/Xcode_${versao}.app"
+              break
+            fi
+          done
+
       - name: Versões
         run: |
           xcodebuild -version
           swift --version
+          xcrun simctl list runtimes | head -n 10
           xcrun simctl list devices available | grep -i iphone | head -n 5
 
       - name: Instalar o XcodeGen

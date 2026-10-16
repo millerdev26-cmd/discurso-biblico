@@ -13,8 +13,10 @@ explica **como gerar o projeto, rodar os testes e o que verificar** no Mac.
 
 ## 1. Requisitos
 
-- macOS com **Xcode 16** (ou 15.4+; o alvo usa `SWIFT_VERSION 5.0` e
-  implantação iOS 17).
+- macOS com **Xcode 26** (ou 16.4+; o alvo usa `SWIFT_VERSION 5.0` e
+  implantação iOS 17). Nos testes de interface, use um Xcode da mesma geração
+  do simulador: no CI, o Xcode 16.4 (SDK iOS 18) contra um simulador iOS 26
+  fazia os toques do XCUITest não chegarem ao aplicativo (decisão 23).
 - [XcodeGen](https://github.com/yonaskolb/XcodeGen) via Homebrew (opcional;
   sem ele dá para criar o projeto à mão em 4 passos).
 - Simulador iOS 17+ ou um iPhone/iPad.
@@ -64,14 +66,17 @@ possuir um Mac. Três caminhos, do mais barato ao mais caro:
 O repositório inclui o workflow [`.github/workflows/ios.yml`](../.github/workflows/ios.yml).
 A cada push, num runner macOS do GitHub Actions, ele:
 
-1. instala o XcodeGen e gera o projeto a partir de `project.yml`;
-2. compila o aplicativo para o simulador (`build-for-testing`);
-3. executa **todos** os testes de unidade — inclusive os 27+ de
+1. escolhe o **Xcode 26.x** instalado no runner (o padrão do `macos-15` é o
+   16.4, cujo SDK é o iOS 18 — mistura que quebra os toques do XCUITest no
+   simulador iOS 26; ver decisão 23 em `docs/DECISOES.md`);
+2. instala o XcodeGen e gera o projeto a partir de `project.yml`;
+3. compila o aplicativo para o simulador (`build-for-testing`);
+4. executa **todos** os testes de unidade — inclusive os 27+ de
    SwiftData/UIKit/PDFKit que não rodam em Linux;
-4. executa os **testes de interface** (XCUITest) que percorrem as telas no
+5. executa os **testes de interface** (XCUITest) que percorrem as telas no
    simulador e guardam 12 capturas de tela;
-5. roda também o núcleo (`swift test`) em Linux **e** macOS;
-6. guarda o `xcresult` e publica as capturas no artefato
+6. roda também o núcleo (`swift test`) em Linux **e** macOS;
+7. guarda o `xcresult` e publica as capturas no artefato
    **`capturas-simulador`** (`Actions ▸ execução ▸ Artifacts`) — é assim que
    dá para *ver* o app sem ter um Mac.
 
@@ -81,14 +86,17 @@ com marcações, referências bíblicas, notas e indicações, além de um mater
 Markdown indexado na biblioteca. No uso normal nada é criado sozinho.
 
 **Resultado neste repositório** (`millerdev26-cmd/discurso-biblico`, isolado,
-`Actions ▸ iOS`): aplicativo compilado e **86 testes de unidade + 2 de
-interface** no simulador (iPhone 16, Xcode 16.4, iOS 26.2), núcleo com
-**169 testes** em Linux e macOS e **59 testes** da lógica do app rodando em
-Linux (`Scripts/verify_app_logic.sh`). A primeira compilação real encontrou 16
-defeitos que a análise sintática não via — inclusive dois de lógica —, todos
-listados na decisão 17 de [`docs/DECISOES.md`](../docs/DECISOES.md); a
-primeira rodada de testes de interface encontrou mais um (o nome do livro
-mostrado à partir de uma abreviatura), na decisão 22.
+`Actions ▸ iOS`): aplicativo compilado e **86 testes de unidade** verdes no
+simulador (iPhone 16, iOS 26.2), mais os **2 testes de interface** que geram as
+capturas; núcleo com **169 testes** em Linux e macOS e **59 testes** da lógica
+do app rodando em Linux (`Scripts/verify_app_logic.sh`). A primeira compilação
+real encontrou 16 defeitos que a análise sintática não via — inclusive dois de
+lógica —, todos listados na decisão 17 de
+[`docs/DECISOES.md`](../docs/DECISOES.md); os testes do conteúdo de exemplo e a
+primeira rodada de testes de interface encontraram mais dois: o nome canônico
+do livro ("Salmos", não "Salmo"; decisão 22) e o descompasso entre a versão do
+Xcode e a do simulador, que impedia os toques de chegarem ao aplicativo
+(decisão 23).
 
 Para publicar uma cópia nova (passos já executados aqui):
 

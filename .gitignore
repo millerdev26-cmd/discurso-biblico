@@ -12,6 +12,9 @@ DerivedData/
 xcuserdata/
 App/.ci/
 
+# xtool (compilação sem Mac): artefatos de build
+App/xtool/
+
 # Python (Scripts/make_fixtures.py)
 __pycache__/
 *.pyc

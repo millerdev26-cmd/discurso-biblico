@@ -429,3 +429,39 @@ expira em 7 dias. E, como neste ambiente não há `Xcode.xip`, **a compilação
 pelo xtool ainda não foi executada** — o que foi conferido foi o formato dos
 arquivos (`swift package describe` sem erros e o schema do `xtool.yml`). Para
 validar compilação e testes, use a nuvem.
+
+## 24. Testes de interface: Xcode na mesma geração do simulador e toques com três estratégias
+
+**Decisão.** O workflow escolhe o **Xcode 26.x** mais novo instalado no runner
+(o padrão do `macos-15` é o 16.4) antes de gerar o projeto. E os testes de
+interface tocam por **três estratégias** — toque pelo elemento, toque real por
+coordenada e toque com pressão curta —, parando na primeira que faz a tela
+esperada aparecer; quando nenhuma funciona, o passo guarda `falha-<passo>`
+(captura + árvore de acessibilidade) no artefato do CI.
+
+**Por quê.** A primeira rodada dos testes de interface (execução 38917807492)
+falhou nos dois testes: a linha do discurso e a linha da biblioteca eram
+tocadas e **nada acontecia na tela**, e a aba "Ajustes" falhava com
+`kAXErrorCannotComplete`. O artefato dessa execução permitiu descartar defeito
+do aplicativo e apontar o ambiente:
+
+- o evento sintetizado chegou exatamente no centro da linha (anexo
+  "Synthesized Event": toque em (195,3; 464,8), dentro do quadro
+  `{16, 406} × {361, 116,7}`) e a árvore de acessibilidade continuava idêntica
+  60 s depois — sem crash, sem troca de pid, sem modal cobrindo a tela;
+- os mesmos toques sintetizados **funcionaram** na barra de abas e na barra de
+  navegação (`Importar material`, `Biblioteca`), então o app estava recebendo e
+  tratando toques;
+- o log de versões mostrou `Xcode 16.4` (SDK iOS 18) contra
+  `{ platform:iOS Simulator, OS:26.2 }`: o XCUITest de uma geração testando o
+  sistema de duas gerações à frente. No iOS 26 esse descompasso é conhecido por
+  produzir exatamente esse sintoma ("toca e não acontece nada"; abas que
+  raramente respondem) e o remédio prático é o toque por coordenada.
+
+**Consequência.** Com o Xcode 26 o aplicativo passa a ser compilado com o SDK
+do iOS 26 e as capturas mostram a aparência do iOS 26 (é também o sistema dos
+aparelhos do autor). O `macos-15` já traz Xcode 26.3/26.2/26.1.1/26.0.1
+instalados — o passo novo escolhe o mais novo disponível e imprime a lista e
+os simuladores, para o dia em que a imagem do runner mudar. Se um dia o
+`Xcode 26.x` não existir, o script mantém o padrão do runner (e a rodada de
+testes de interface tende a falhar como falhou aqui — o motivo fica registrado).
