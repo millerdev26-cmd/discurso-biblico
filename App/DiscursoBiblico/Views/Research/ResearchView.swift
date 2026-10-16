@@ -406,7 +406,10 @@ struct ResearchView: View {
                                    let localItem = (try? await environment.libraryRepository.load(id: itemID)) ?? nil {
                                     localPreviewItem = localItem
                                 } else if let url = item.result.url {
-                                    UIApplication.shared.open(url)
+                                    // Variante síncrona explícita: em contexto
+                                    // `async`, `open(url)` resolve para a
+                                    // versão assíncrona e exigiria `await`.
+                                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
                                 }
                             }
                         }
@@ -511,7 +514,7 @@ struct ResearchView: View {
             return
         }
         if let url = result.url {
-            UIApplication.shared.open(url)
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
     }
 
