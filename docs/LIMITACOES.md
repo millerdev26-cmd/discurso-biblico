@@ -10,16 +10,22 @@ referência para decidir o que fazer antes de publicar.
 
 O alvo iOS foi escrito por completo e passou por:
 
-- análise sintática de todos os 49 arquivos Swift (`Scripts/parse_check_app.sh`);
-- testes reais da lógica independente de Apple — 54 testes
+- análise sintática de todos os 53 arquivos Swift (`Scripts/parse_check_app.sh`);
+- testes reais da lógica independente de Apple — 59 testes
   (`Scripts/verify_app_logic.sh`), incluindo codificação dos registros,
-  ligações de referências, armazenamento de arquivos, importação e backup;
-- **compilação real e execução dos 81 testes no simulador** (iPhone 16,
-  iOS 26.2, Xcode 16.4), na nuvem, pelo workflow
+  ligações de referências, armazenamento de arquivos, importação, backup e o
+  conteúdo de exemplo dos testes de interface;
+- **compilação real e execução dos 86 testes de unidade no simulador**
+  (iPhone 16, iOS 26.2, Xcode 16.4), na nuvem, pelo workflow
   `.github/workflows/ios.yml` (GitHub Actions, runner macOS): a cada push,
   `xcodebuild build-for-testing` + `test-without-building` e o núcleo em
-  Linux e macOS (168 testes em cada). O `xcresult` fica guardado como
-  artefato do workflow.
+  Linux e macOS (169 testes em cada). O `xcresult` fica guardado como
+  artefato do workflow;
+- **testes de interface (XCUITest) no mesmo simulador**: dois testes
+  percorrem discursos (lista, detalhe, editor, modo de proferimento com e
+  sem controles, ajustes da apresentação), biblioteca (leitura de um material
+  indexado) e as abas Pesquisar e Ajustes, guardando **12 capturas de tela**
+  publicadas no artefato `capturas-simulador`.
 
 O que **ainda não está verificado**, porque exige um Mac com simulador
 interativo ou um aparelho real:
@@ -28,8 +34,10 @@ interativo ou um aparelho real:
   medição de seções, PDFKit renderizando/salvando o arquivo de verdade, vozes
   do sistema (AVSpeechSynthesizer), brilho da tela, folha de Compartilhar no
   iPad;
-- nenhum fluxo foi percorrido à mão no simulador (toques, gestos, navegação
-  entre abas), embora toda a lógica com teste automatizado passe;
+- nenhum fluxo foi percorrido **à mão**: os testes de interface verificam que
+  as telas abrem com o conteúdo esperado e capturam a imagem, mas ninguém
+  **apontou e olhou** cada tela — gestos, ajuste fino de rolagem, teclado,
+  rotação e Dynamic Type continuam no checklist;
 - nada foi instalado num iPhone/iPad: instalar exige Xcode, TestFlight com
   conta de desenvolvedor ou xtool (que depende do `Xcode.xip` da Apple).
 
@@ -41,8 +49,9 @@ em ordem: SwiftData (`@ModelActor`, `#Predicate`), `PresentationTextView`
 
 **Sem um Mac, a compilação e os testes já estão fechados na nuvem:** o
 workflow `.github/workflows/ios.yml` roda num runner macOS do GitHub Actions,
-gera o projeto com o XcodeGen, compila o alvo iOS e executa os 81 testes do
-app (inclusive os 27 que só existem na Apple), além do núcleo em Linux e
+gera o projeto com o XcodeGen, compila o alvo iOS, executa os 86 testes de
+unidade do app (inclusive os 27 que só existem na Apple), os 2 testes de
+interface — publicando as capturas de tela —, além do núcleo em Linux e
 macOS. O projeto Xcode também **já vem gerado e commitado**
 (`App/DiscursoBiblico.xcodeproj`, com o XcodeGen 2.46 rodando no Linux). O que
 continua exigindo um Mac (ou Mac alugado com acesso remoto) é a verificação
@@ -104,8 +113,12 @@ extração usa PDFKit; a limitação afeta apenas diagnósticos/fallback.
 - **Importação em massa por arrastar e soltar** no iPad: apenas pelo seletor
   de arquivos/compartilhamento.
 - **Widgets, Apple Watch, atalhos do sistema**: nenhum.
-- **Testes de interface (XCUITest)**: não existem; a verificação visual está
-  no checklist manual.
+- **Testes de interface (XCUITest)**: existem e rodam no CI (2 testes, 12
+  capturas), mas cobrem **um caminho feliz por tela** — lista, detalhe, editor,
+  apresentação, biblioteca, Pesquisar e Ajustes. Não cobrem gestures,
+  entrada de texto, rotação, Dynamic Type, iPad nem os diálogos de importação,
+  exportação e backup (esses continuam no checklist manual da seção 5 do
+  [`App/README.md`](../App/README.md)).
 - **Acessibilidade**: Dynamic Type e áreas seguras são respeitados no código;
   VoiceOver foi considerado (rótulos, `accessibilityLabel` onde necessário),
   mas **não** foi verificado em aparelho.
@@ -122,12 +135,13 @@ extração usa PDFKit; a limitação afeta apenas diagnósticos/fallback.
 
 ## 7. Ambiente de verificação
 
-- O script `Scripts/verify_app_logic.sh` cobre **6 arquivos** do app
+- O script `Scripts/verify_app_logic.sh` cobre **7 arquivos** do app
   (`PayloadCoding`, `LibraryFileStore`, `SecurityScopedAccess`,
-  `BibleReferenceLink`, `LibraryImportService`, `BackupCoordinator`); os outros
-  **33 arquivos de código** da camada de aplicativo (telas, view models,
-  integrações com o sistema) só têm a análise sintática
-  (`Scripts/parse_check_app.sh`) e a revisão linha a linha.
+  `BibleReferenceLink`, `LibraryImportService`, `BackupCoordinator`,
+  `DemoSeed`); os outros **34 arquivos de código** da camada de aplicativo
+  (telas, view models, integrações com o sistema) só têm a análise sintática
+  (`Scripts/parse_check_app.sh`), a revisão linha a linha e — para os que têm
+  interface — a execução dos testes de interface no simulador.
 - O toolchain usado é o Swift 6.2 em Linux (`~/toolchains/swift-6.2`); os
   comandos do README funcionam em macOS também (`swift test`,
   `xcodebuild test`).

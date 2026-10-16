@@ -229,15 +229,15 @@ sistema, sem rede nem serviços externos; para ao sair da tela.
 **Por quê.** Ajuda a revisar o texto e a estimar o ritmo, sem custo nem
 privacidade em risco. É complementar ao modo de proferimento, não o substitui.
 
-## 17. Testes: 168 no núcleo, 54 no app (Linux), 27 no app (Apple)
+## 17. Testes: 169 no núcleo, 59 no app (Linux), 27 no app (Apple)
 
 **Decisão.** Toda regra tem teste no nível em que pode rodar:
-- núcleo (Linux e macOS): `swift test` — 168;
+- núcleo (Linux e macOS): `swift test` — 169;
 - lógica do app independente de Apple (Linux): `Scripts/verify_app_logic.sh`
-  — 54;
+  — 59;
 - persistência SwiftData e UIKit/PDFKit: executados no **simulador do iOS**
-  pelo CI macOS — 27 (81 no total, dentro do simulador);
-- sintaxe de todos os arquivos do app: `Scripts/parse_check_app.sh` — 49.
+  pelo CI macOS — 27 (86 no total, dentro do simulador);
+- sintaxe de todos os arquivos do app: `Scripts/parse_check_app.sh` — 53.
 
 **Por quê.** O ambiente de desenvolvimento deste trabalho é Linux; seria
 desonesto declarar “compila no iPhone” sem poder rodar o Xcode. A verificação
@@ -345,12 +345,13 @@ com aviso a um que não abre. Nada é apagado sem ação explícita.
 
 **Decisão.** A compilação do alvo iOS é fechada na nuvem, num runner macOS do
 GitHub Actions (`.github/workflows/ios.yml`): a cada push ele gera o projeto,
-compila para o simulador e roda os 81 testes do app (inclusive os 27 de
-SwiftData/UIKit/PDFKit), mais o núcleo em Linux e macOS, guardando o
-`xcresult` como artefato. O `.xcodeproj` também é gerado no próprio Linux
-(decisão 19). O `xtool` (substituto do Xcode para Linux, verificado rodando
-nesta máquina — AppImage 1.22.2) fica registrado como caminho **opcional**
-para compilar/instalar sem Mac, mas não é adotado por padrão.
+compila para o simulador e roda os 86 testes do app (inclusive os 27 de
+SwiftData/UIKit/PDFKit) e os testes de interface (decisão 22), mais o núcleo em
+Linux e macOS, guardando o `xcresult` como artefato. O `.xcodeproj` também é
+gerado no próprio Linux (decisão 19). O `xtool` (substituto do Xcode para
+Linux, verificado rodando nesta máquina — AppImage 1.22.2) fica registrado como
+caminho **opcional** para compilar/instalar sem Mac, mas não é adotado por
+padrão (decisão 23).
 
 **Por quê.**
 - O Xcode **não existe** fora do macOS; o SDK do iOS é distribuído dentro do
@@ -364,14 +365,67 @@ para compilar/instalar sem Mac, mas não é adotado por padrão.
   for instalar num iPhone físico sem Mac — não para validar compilação.
 
 **Resultado (16/10/2026).** O caminho foi percorrido de ponta a ponta:
-repositório público, 8 rodadas de CI até o verde. A primeira compilação real
+repositório público, 9 rodadas de CI até o verde. A primeira compilação real
 encontrou **16 defeitos** que a análise sintática não via — inclusive dois de
 **lógica** que só a execução revelava (marcações em linha saindo sem acentos e
-a nota do apresentador) —, todos listados na decisão 17. Estado final do CI:
-núcleo com 168 testes em Linux e macOS, aplicativo compilado e **81 testes
-passando no simulador** (iPhone 16, Xcode 16.4), com o `xcresult` guardado
-como artefato.
+a nota do apresentador) —, todos listados na decisão 17; a primeira rodada de
+testes de interface encontrou mais um, na decisão 22. Estado final do CI:
+núcleo com 169 testes em Linux e macOS, aplicativo compilado e **86 testes de
+unidade + 2 de interface passando no simulador** (iPhone 16, Xcode 16.4), com
+o `xcresult` e as capturas de tela guardados como artefato.
 
 **Consequência.** O que a nuvem **não** cobre continua sendo a verificação na
 tela (simulador interativo/aparelho): permanece no checklist do
 `App/README.md` e em [`LIMITACOES.md`](LIMITACOES.md).
+
+## 22. Testes de interface no CI, com conteúdo de exemplo sob demanda
+
+**Decisão.** O alvo `DiscursoBiblicoUITests` (XCUITest) abre o aplicativo de
+verdade no simulador, percorre as telas principais e guarda **12 capturas de
+tela** como anexos do resultado; o workflow extrai e publica essas imagens no
+artefato `capturas-simulador`. Para que as telas tenham conteúdo, o app cria um
+discurso de exemplo e um material Markdown **apenas** quando é iniciado com o
+argumento `-uiTestSeed` (`Services/DemoSeed.swift` + `DemoSeed+Environment`,
+ligados em `AppEnvironment.performStart`). O conteúdo do exemplo é Swift puro,
+então é testado também em Linux (`DemoSeedTests`, 5 testes); a instalação no
+banco fica num arquivo à parte, que depende do SwiftData.
+
+**Por quê.**
+- Sem um Mac, a única forma de **ver** o aplicativo é a imagem: o teste
+  automatizado abre a tela, interage nos botões que importam e fotografa o
+  resultado. As capturas viram evidência de que o app renderiza, e não só de
+  que compila.
+- O conteúdo de exemplo fica atrás de um **argumento de lançamento**: no uso
+  normal o aplicativo nunca inventa discursos nem materiais para o usuário.
+- Manter o conteúdo em um arquivo sem SwiftData permite verificá-lo no Linux,
+  onde a maioria das suítes roda; só a gravação no banco precisa da Apple.
+
+**Defeito encontrado por essa via** (primeira execução no CI): o exemplo
+escreve “Salmo 23:1-4” no texto, mas o nome canônico do catálogo é “Salmos”, e
+`DemoSeedTests` esperava a forma singular — a referência é exibida, gravada no
+backup e exportada sempre com o nome do catálogo. O teste passou a esperar a
+forma canônica e o núcleo ganhou um teste de regressão
+(`testAbreviacaoDoTextoVirarNomeCanônicoDoCatálogo`) para “salmo 23:1-4”,
+“1Cor 13:4, 5”, “Jo 3:16” e “sl 23”. O comportamento do app estava certo; a
+expectativa é que estava errada — e agora está escrito por quê.
+
+## 23. Manifesto SwiftPM do app para o caminho sem Mac (xtool)
+
+**Decisão.** `App/Package.swift`, `App/xtool.yml` e `App/Info-xtool.plist`
+descrevem o mesmo aplicativo no formato SwiftPM, para quem quiser compilar e
+instalar num iPhone físico sem Mac pelo `xtool`. As fontes são as mesmas
+(`DiscursoBiblico/`), com o mesmo pacote local `DiscursoCore`; o CI **não** usa
+esse caminho e continua no XcodeGen + `xcodebuild`.
+
+**Por quê.** Sem Mac, as três saídas são: nuvem (valida compilação e testes, de
+graça), Mac alugado (dá a tela) e xtool (compila e **instala** no aparelho).
+Deixar o manifesto pronto significa que o passo “instalar no iPhone” não
+depende de adaptation: só falta ter o `Xcode.xip` e a conta Apple.
+
+**Consequência — leia antes de usar.** O xtool **não** dispensa o SDK da
+Apple: ele extrai o SDK do `Xcode.xip` (~10 GB), cujo licenciamento é da Apple
+e a extração fora do macOS é área cinzenta. Com Apple ID gratuita a assinatura
+expira em 7 dias. E, como neste ambiente não há `Xcode.xip`, **a compilação
+pelo xtool ainda não foi executada** — o que foi conferido foi o formato dos
+arquivos (`swift package describe` sem erros e o schema do `xtool.yml`). Para
+validar compilação e testes, use a nuvem.

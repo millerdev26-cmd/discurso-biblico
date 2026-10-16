@@ -1,0 +1,16 @@
+# Configuração do xtool (compilação e instalação no aparelho sem um Mac).
+#
+#     cd App
+#     xtool dev              # compila, instala e abre no aparelho
+#     xtool dev build --ipa  # gera o .ipa assinado
+#
+# O manifesto SwiftPM usado aqui é o `App/Package.swift`; as chaves que o
+# xtool gera sozinho (CFBundleIdentifier, execução, versão, familia) saem
+# daqui. As chaves extras do Info.plist estão em `Info-xtool.plist`.
+#
+# Referência: https://xtool.sh/documentation/xtool/control/
+
+version: 1
+product: DiscursoBiblico
+bundleID: br.org.discursobiblico.app
+infoPath: Info-xtool.plist

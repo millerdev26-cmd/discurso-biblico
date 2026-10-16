@@ -14,6 +14,11 @@
 //  offline. Como em todo o aplicativo, nenhum texto bíblico é copiado:
 //  apenas as referências.
 //
+//  Este arquivo tem apenas o CONTEÚDO (Swift puro + DiscursoCore), para que
+//  ele seja verificado também em Linux, pelo Scripts/verify_app_logic.sh. A
+//  instalação no banco está em DemoSeed+Environment.swift, que depende do
+//  AppEnvironment (SwiftData).
+//
 
 import DiscursoCore
 import Foundation
@@ -26,37 +31,6 @@ enum DemoSeed {
     /// `true` quando o processo foi iniciado com o argumento.
     static var isRequested: Bool {
         CommandLine.arguments.contains(launchArgument)
-    }
-
-    // MARK: - Instalação
-
-    /// Cria o conteúdo de exemplo, uma única vez, apenas em banco vazio.
-    @MainActor
-    static func install(into environment: AppEnvironment) async {
-        let speeches = (try? await environment.speechRepository.loadSummaries()) ?? []
-        if speeches.isEmpty {
-            try? await environment.speechRepository.save(makeSpeech())
-        }
-
-        let items = (try? await environment.libraryRepository.loadItems()) ?? []
-        if items.isEmpty {
-            await installLibraryItem(into: environment)
-        }
-    }
-
-    /// Importa o material de exemplo pela mesma via usada pelo usuário
-    /// (triagem, armazenamento e indexação), para exercitar o caminho real.
-    private static func installLibraryItem(into environment: AppEnvironment) async {
-        let directory = FileManager.default.temporaryDirectory
-            .appendingPathComponent("DiscursoBiblico-Exemplo", isDirectory: true)
-        let fileURL = directory.appendingPathComponent("Anotações de estudo (exemplo).md")
-        do {
-            try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-            try markdown.write(to: fileURL, atomically: true, encoding: .utf8)
-        } catch {
-            return
-        }
-        _ = await environment.importer.importFiles(at: [fileURL])
     }
 
     // MARK: - Discurso de exemplo

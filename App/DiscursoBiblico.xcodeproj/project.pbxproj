@@ -18,6 +18,7 @@
 		270FF85CD79430D4CBD64350 /* BibleReferenceLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EC4CA36C328243698FFBF6 /* BibleReferenceLink.swift */; };
 		305337B3C06A30ECE862C755 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687E9E4C70EBC80295CA222D /* SettingsViewModel.swift */; };
 		34BFA351489D63A5E8464F9F /* BiblePassagePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5891BA9D5FBCDE5D3BA6C2 /* BiblePassagePanel.swift */; };
+		359376ADBE7A3A574D4E58D1 /* DemoSeed+Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF88CE68DC747A81A16D2ED /* DemoSeed+Environment.swift */; };
 		395A75CD3329B4D50D4DD3FD /* LibraryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7035574CF7A2A5D966C99E31 /* LibraryViewModel.swift */; };
 		39DCC814B579266345BB0A1B /* PDFKitTextExtracting.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE44E3FE335B4A2E9AEB3E1B /* PDFKitTextExtracting.swift */; };
 		3ACDEE6981C0C8296D40245C /* DiscursoBiblicoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7899B7781D91702020E647 /* DiscursoBiblicoApp.swift */; };
@@ -138,6 +139,7 @@
 		F8045C18833A4FCD44A31CEA /* PresentationTextBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationTextBuilderTests.swift; sourceTree = "<group>"; };
 		F9EFFEB4171B42EF81DC83BF /* SpeechEditorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechEditorViewModel.swift; sourceTree = "<group>"; };
 		FBC92EA8AD975FA97149C913 /* SpeechEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechEditorView.swift; sourceTree = "<group>"; };
+		FBF88CE68DC747A81A16D2ED /* DemoSeed+Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DemoSeed+Environment.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -278,6 +280,7 @@
 				F14529F812295B46129FB54F /* BackupCoordinator.swift */,
 				F6EC4CA36C328243698FFBF6 /* BibleReferenceLink.swift */,
 				1CD56A355512566820377713 /* DemoSeed.swift */,
+				FBF88CE68DC747A81A16D2ED /* DemoSeed+Environment.swift */,
 				86FE4945B45C44460ACA0A3D /* LibraryImportService.swift */,
 				122A2222AA66DBFD5D90F575 /* NetworkMonitor.swift */,
 				AE44E3FE335B4A2E9AEB3E1B /* PDFKitTextExtracting.swift */,
@@ -490,6 +493,7 @@
 				DEB84BC45301ED4792323A85 /* BibleReferencePicker.swift in Sources */,
 				BD40CE5638CA6ED614F7444D /* CommonViews.swift in Sources */,
 				B827FB69BD74788FF8088867 /* CoreAliases.swift in Sources */,
+				359376ADBE7A3A574D4E58D1 /* DemoSeed+Environment.swift in Sources */,
 				891A2339216F5E231C1AA919 /* DemoSeed.swift in Sources */,
 				3ACDEE6981C0C8296D40245C /* DiscursoBiblicoApp.swift in Sources */,
 				06EA2CC23575A5FF267B7BDA /* LibraryFileStore.swift in Sources */,

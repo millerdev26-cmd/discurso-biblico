@@ -92,6 +92,10 @@ verificação **na tela** (simulador interativo) e em aparelho real — veja
 [`LIMITACOES.md`](../docs/LIMITACOES.md) (item 1) e o checklist da seção 5
 deste documento.
 
+> A verificação na tela avançou na **fase 7**
+> ([`RELATORIO-FASE-7.md`](RELATORIO-FASE-7.md)): testes de interface no CI,
+> com capturas de tela. Os números desta tabela são os do fechamento da fase 6.
+
 ## Limitações desta fase
 - O backup não leva os arquivos da biblioteca (só os registros e anotações).
 - DOCX/JWPUB continuam fora da exportação/importação de conteúdo.

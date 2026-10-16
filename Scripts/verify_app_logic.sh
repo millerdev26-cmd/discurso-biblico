@@ -7,9 +7,10 @@
 #
 # O ambiente Linux não compila o alvo iOS, mas vários arquivos da camada de
 # aplicativo só usam Foundation + DiscursoCore (codificação dos registros,
-# ligações de referências, armazenamento de arquivos, importação e backup).
-# Este script monta um pacote SwiftPM temporário com esses arquivos e com os
-# testes correspondentes, e roda `swift test` de verdade.
+# ligações de referências, armazenamento de arquivos, importação, backup e o
+# conteúdo de exemplo dos testes de interface). Este script monta um pacote
+# SwiftPM temporário com esses arquivos e com os testes correspondentes, e roda
+# `swift test` de verdade.
 #
 # Os arquivos de teste que dependem de estruturas da Apple estão protegidos
 # por `#if canImport(...)` e compilam vazios aqui — são executados pelo Xcode
@@ -46,6 +47,7 @@ APP_FILES=(
     "Services/BibleReferenceLink.swift"
     "Services/LibraryImportService.swift"
     "Services/BackupCoordinator.swift"
+    "Services/DemoSeed.swift"
 )
 
 for file in "${APP_FILES[@]}"; do

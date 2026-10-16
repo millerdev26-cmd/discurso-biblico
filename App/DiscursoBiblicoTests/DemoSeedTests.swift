@@ -7,11 +7,11 @@
 //  precisam mostrar (marcações, referências, notas, listas e um material
 //  indexável na biblioteca).
 //
-//  Este arquivo exige SwiftData/SwiftUI (iOS/macOS) e é ignorado na
-//  verificação em Linux.
+//  O conteúdo (DemoSeed.swift) é Swift puro, então estes testes também rodam
+//  na verificação em Linux (Scripts/verify_app_logic.sh); a instalação no
+//  banco é exercitada pelos testes de interface no simulador.
 //
 
-#if canImport(SwiftData) && canImport(SwiftUI)
 import DiscursoCore
 import XCTest
 @testable import DiscursoBiblico
@@ -44,8 +44,10 @@ final class DemoSeedTests: XCTestCase {
         let speech = DemoSeed.makeSpeech()
         let references = speech.references.map(\.displayText)
 
+        // O texto do exemplo escreve "Salmo 23:1-4" (singular, como se fala),
+        // mas a referência é exibida com o nome canônico do catálogo: "Salmos".
         XCTAssertTrue(references.contains("João 3:16"))
-        XCTAssertTrue(references.contains("Salmo 23:1-4"))
+        XCTAssertTrue(references.contains("Salmos 23:1-4"))
         XCTAssertTrue(references.contains("Romanos 15:13"))
         XCTAssertTrue(references.contains("Colossenses 3:13"))
 
@@ -84,4 +86,3 @@ final class DemoSeedTests: XCTestCase {
         XCTAssertTrue(DemoSeed.markdown.contains("João 3:16"))
     }
 }
-#endif

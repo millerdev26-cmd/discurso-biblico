@@ -271,6 +271,16 @@ final class BibleReferenceParserTests: XCTestCase {
         XCTAssertEqual(reference?.abbreviatedText, "1 Cor. 13:4-7")
     }
 
+    func testAbreviacaoDoTextoVirarNomeCanônicoDoCatálogo() {
+        // O orador escreve do jeito que fala ("Salmo 23", "1Cor 13", "Jo 3"),
+        // mas tudo o que o aplicativo mostra — e o que vai para a nota, a
+        // exportação e o backup — usa o nome do catálogo.
+        XCTAssertEqual(BibleReferenceParser.parseWhole("salmo 23:1-4")?.displayText, "Salmos 23:1-4")
+        XCTAssertEqual(BibleReferenceParser.parseWhole("1Cor 13:4, 5")?.displayText, "1 Coríntios 13:4, 5")
+        XCTAssertEqual(BibleReferenceParser.parseWhole("Jo 3:16")?.displayText, "João 3:16")
+        XCTAssertEqual(BibleReferenceParser.parseWhole("sl 23")?.displayText, "Salmos 23")
+    }
+
     func testLinksOficiaisUsamNumeroDoLivro() {
         let reference = BibleReferenceParser.parseWhole("João 3:16")
         let url = reference?.officialWebURL()

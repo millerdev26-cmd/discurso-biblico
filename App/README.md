@@ -28,12 +28,15 @@ xcodegen generate
 open DiscursoBiblico.xcodeproj
 ```
 
-`project.yml` declara dois alvos:
+`project.yml` declara três alvos:
 
 - **DiscursoBiblico** — o aplicativo (fontes em `DiscursoBiblico/`), com o
   pacote local `DiscursoCore` da raiz do repositório;
 - **DiscursoBiblicoTests** — os testes do aplicativo
-  (`DiscursoBiblicoTests/`).
+  (`DiscursoBiblicoTests/`);
+- **DiscursoBiblicoUITests** — os testes de interface (XCUITest) que abrem o
+  app no simulador, percorrem as telas e guardam **capturas de tela**
+  (`DiscursoBiblicoUITests/`).
 
 ### Sem XcodeGen (criando o projeto à mão)
 
@@ -63,17 +66,29 @@ A cada push, num runner macOS do GitHub Actions, ele:
 
 1. instala o XcodeGen e gera o projeto a partir de `project.yml`;
 2. compila o aplicativo para o simulador (`build-for-testing`);
-3. executa **todos** os testes — inclusive os 27 de SwiftData/UIKit/PDFKit
-   que não rodam em Linux;
-4. roda também o núcleo (`swift test`) em Linux **e** macOS;
-5. guarda o `xcresult` como artefato para baixar.
+3. executa **todos** os testes de unidade — inclusive os 27+ de
+   SwiftData/UIKit/PDFKit que não rodam em Linux;
+4. executa os **testes de interface** (XCUITest) que percorrem as telas no
+   simulador e guardam 12 capturas de tela;
+5. roda também o núcleo (`swift test`) em Linux **e** macOS;
+6. guarda o `xcresult` e publica as capturas no artefato
+   **`capturas-simulador`** (`Actions ▸ execução ▸ Artifacts`) — é assim que
+   dá para *ver* o app sem ter um Mac.
+
+Os testes de interface usam o argumento de lançamento `-uiTestSeed`: só com
+ele o app cria conteúdo de exemplo (`Services/DemoSeed.swift`) — um discurso
+com marcações, referências bíblicas, notas e indicações, além de um material
+Markdown indexado na biblioteca. No uso normal nada é criado sozinho.
 
 **Resultado neste repositório** (`millerdev26-cmd/discurso-biblico`, isolado,
-`Actions ▸ iOS`): **CI verde** — aplicativo compilado e **81 testes passando**
-no simulador (iPhone 16, Xcode 16.4, iOS 26.2) e núcleo com **168 testes** em
-Linux e macOS. A primeira compilação real encontrou 16 defeitos que a análise
-sintática não via — inclusive dois de lógica —, todos listados na decisão 17 de
-[`docs/DECISOES.md`](../docs/DECISOES.md).
+`Actions ▸ iOS`): aplicativo compilado e **86 testes de unidade + 2 de
+interface** no simulador (iPhone 16, Xcode 16.4, iOS 26.2), núcleo com
+**169 testes** em Linux e macOS e **59 testes** da lógica do app rodando em
+Linux (`Scripts/verify_app_logic.sh`). A primeira compilação real encontrou 16
+defeitos que a análise sintática não via — inclusive dois de lógica —, todos
+listados na decisão 17 de [`docs/DECISOES.md`](../docs/DECISOES.md); a
+primeira rodada de testes de interface encontrou mais um (o nome do livro
+mostrado à partir de uma abreviatura), na decisão 22.
 
 Para publicar uma cópia nova (passos já executados aqui):
 
@@ -91,10 +106,11 @@ git push -u origin main
 ```
 
 Notas:
-- **Autoria dos commits:** está como “Discurso Biblico (local)”. Para vincular
-  os commits à sua conta do GitHub (reescreve o histórico e exige
-  `git push --force`, inofensivo em repositório recém-criado):
-  `git config user.name "Seu Nome" && git config user.email "voce@exemplo.com"
+- **Autoria dos commits:** já estão vinculados à conta
+  `Millerdev26 <328902290+millerdev26-cmd@users.noreply.github.com>`. Para
+  mudar de identidade no futuro (reescreve o histórico e exige
+  `git push --force`, inofensivo num repositório recém-criado):
+  `git config user.name "Nome" && git config user.email "voce@exemplo.com"
   && git rebase --root --exec 'git commit --amend --reset-author --no-edit'`.
 - **Público × privado:** runners macOS são gratuitos em repositórios
   **públicos**; em privados, cada execução consome ≈10 minutos do plano por
@@ -123,35 +139,65 @@ Se você editar `project.yml`, regenere no Mac com
 `brew install xcodegen && xcodegen generate` (a versão Linux do XcodeGen
 também funciona: `swift build -c release` no repositório do XcodeGen).
 
-### d. xtool — compilar no próprio Linux (experimental)
+### d. xtool — instalar no iPhone/iPad direto do Linux (preparado no repositório)
 
 O [xtool](https://github.com/xtool-org/xtool) é um "substituto do Xcode"
-aberto que compila, assina e **instala** apps iOS direto do Linux — mas
-atenção: ele **não dispensa o SDK da Apple**. O `xtool setup` exige:
+aberto que compila, assina e **instala** apps iOS direto do Linux — mas ele
+**não dispensa o SDK da Apple**: o `xtool setup` pede login numa Apple ID e
+o **`Xcode.xip`** (~10 GB) baixado de
+[developer.apple.com/download/all](https://developer.apple.com/download/all/?q=Xcode),
+do qual o xtool extrai o SDK do iOS.
 
-1. uma conta Apple ID (login interativo; há modo API Key para conta paga);
-2. o **`Xcode.xip`** baixado de
-   [developer.apple.com/download/all](https://developer.apple.com/download/all/?q=Xcode)
-   (~10 GB), do qual o xtool extrai o SDK do iOS (`swift sdk list` → `darwin`);
-3. o toolchain **Swift 6.4** para Linux (swift.org) e o `usbmuxd` (para
-   aparelho físico).
+O que **já está pronto** aqui (nada disso é usado pelo CI; o CI continua no
+XcodeGen/Xcode):
 
-Feito isso, o xtool compila nosso `DiscursoCore` e as fontes do app (é
-possível apontar o pacote local) e instala num iPhone por USB — sem Mac.
-O ponto sensível: o app é um projeto Xcode (nosso `project.yml`), enquanto o
-xtool trabalha no formato SwiftPM; a adaptação seria um `Package.swift` do
-app com os mesmos fontes. E há uma ressalva legal a considerar: o SDK
-continua licenciado pela Apple para uso em produtos Apple — extrair e usar o
-SDK fora do macOS é área cinzenta (o xtool tem 11,6 mil estrelas e segue
-publicado, mas a decisão é sua). Para **validar compilação e testes**, o
-caminho (a) já resolve de graça; o xtool vale a pena pelo passo de instalar
-num iPhone físico.
+| Arquivo | Para que serve |
+| --- | --- |
+| `App/Package.swift` | manifesto SwiftPM que compila as **mesmas** fontes do app (`DiscursoBiblico/`) com o pacote local `DiscursoCore`; confira com `cd App && swift package describe` |
+| `App/xtool.yml` | configuração do xtool: `version: 1`, `product`, `bundleID: br.org.discursobiblico.app`, `infoPath: Info-xtool.plist` |
+| `App/Info-xtool.plist` | chaves que o xtool não gera (nome em pt-BR, orientações, esquema `jwlibrary`, tipos de documento); o xtool mescla por cima do que ele monta |
+
+O que depende de você (uma vez):
+
+```bash
+# 1. toolchain com suporte a Swift SDKs (swiftly instala a mais recente)
+curl -O "https://download.swift.org/swiftly/linux/swiftly-$(uname -m).tar.gz"
+tar zxf "swiftly-$(uname -m).tar.gz" && ./swiftly init --quiet-shell-followup
+. ~/.local/share/swiftly/env.sh
+
+# 2. xtool: login na Apple ID + caminho do Xcode.xip (extrai o SDK do iOS)
+#    (o AppImage já baixado está em /tmp/opencode/xtool.AppImage)
+/tmp/opencode/xtool.AppImage setup
+/tmp/opencode/xtool.AppImage sdk status     # deve mostrar o SDK instalado
+
+# 3. aparelho por USB (uma vez)
+sudo apt install usbmuxd
+/tmp/opencode/xtool.AppImage devices        # deve listar seu iPhone/iPad
+
+# 4. compilar e instalar
+cd App
+/tmp/opencode/xtool.AppImage dev build --ipa   # gera o .ipa assinado
+/tmp/opencode/xtool.AppImage dev               # compila, instala e abre no aparelho
+```
+
+Ressalvas honestas:
+- o SDK continua licenciado pela Apple para uso em produtos Apple: extrair e
+  usar o SDK fora do macOS é área cinzenta (o xtool é aberto e segue
+  publicado, mas a decisão é sua);
+- Apple ID **gratuita**: a assinatura expira em **7 dias** (reinstalar);
+  conta paga dá instalação durável e TestFlight;
+- estes arquivos foram conferidos contra o formato do próprio xtool (schema
+  do `xtool.yml` no código-fonte e `swift package describe` sem erros), mas a
+  compilação **pelo xtool ainda não foi executada** — falta o `Xcode.xip`;
+- para **validar compilação e testes**, o caminho (a) já resolve de graça; o
+  xtool vale pelo passo de instalar num iPhone/iPad físico.
 
 > **O que não funciona:** instalar o Xcode em Linux (não existe), Darling
 > (não roda o Xcode), máquinas virtuais de macOS (infração de licença) e
 > cross-compilação com SDK copiado (licenciamento + inviável com
-> SwiftUI/SwiftData). XCUITest na nuvem também é possível, mas o projeto não
-> tem testes de interface — a verificação visual é o checklist da seção 5.
+> SwiftUI/SwiftData). Já os **testes de interface (XCUITest)** rodam no CI e
+> geram capturas de tela (caminho a); o que continua exigindo aparelho (ou
+> Mac) é *interagir* com o app em tempo real — a conferência da seção 5.
 
 ## 4. Rodar os testes do aplicativo
 
@@ -163,17 +209,38 @@ xcodebuild test \
   -destination 'platform=iOS Simulator,name=iPhone 16'
 ```
 
-Os testes se dividem em três grupos:
+Os testes se dividem em quatro grupos:
 
 | Grupo | Arquivos | Plataforma |
 | --- | --- | --- |
-| Lógica pura (também roda em Linux pelo `Scripts/verify_app_logic.sh`) | `PayloadCodingTests`, `BibleReferenceLinkTests`, `LibraryFileStoreTests`, `LibraryImportServiceTests`, `BackupCoordinatorTests` | Qualquer |
+| Lógica pura (também roda em Linux pelo `Scripts/verify_app_logic.sh`) | `PayloadCodingTests` (9), `BibleReferenceLinkTests` (11), `LibraryFileStoreTests` (8), `LibraryImportServiceTests` (17), `BackupCoordinatorTests` (9), `DemoSeedTests` (5) | Qualquer |
 | Persistência | `SwiftDataRepositoriesTests` (10 testes) | iOS/macOS |
 | UIKit/PDFKit | `PresentationTextBuilderTests` (12), `PDFKitTextExtractingTests` (5) | iOS/macOS |
+| Interface (XCUITest, gera capturas de tela) | `DiscursoBiblicoUITests` (2 testes, 12 capturas) | iOS/simulador |
 
-Os arquivos dos dois últimos grupos começam com `#if canImport(SwiftData)` /
+São **86 testes de unidade** (59 deles rodam em Linux) e 2 de interface. Os
+arquivos dos dois grupos do meio começam com `#if canImport(SwiftData)` /
 `#if canImport(UIKit)` / `#if canImport(PDFKit)`: fora da Apple eles compilam
-vazios e não quebram o script de verificação.
+vazios e não quebram o script de verificação. `DemoSeedTests` acompanha o
+conteúdo de exemplo (`Services/DemoSeed.swift`), que é Swift puro — por isso
+roda também em Linux; a instalação dele no banco é o que os testes de interface
+exercitam de verdade.
+
+Para rodar **só** os testes de interface (levam alguns minutos):
+
+```bash
+xcodebuild test \
+  -project App/DiscursoBiblico.xcodeproj \
+  -scheme DiscursoBiblico \
+  -destination 'platform=iOS Simulator,name=iPhone 16' \
+  -only-testing:DiscursoBiblicoUITests \
+  -resultBundlePath Testes.xcresult
+
+# extrair as capturas de tela do resultado
+xcrun xcresulttool export attachments \
+  --path Testes.xcresult --output-path capturas
+ls capturas   # 01-lista-de-discursos.png, 04-proferimento.png, ...
+```
 
 ## 5. Verificação no aparelho/simulador (checklist)
 

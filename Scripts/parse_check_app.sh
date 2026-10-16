@@ -3,8 +3,8 @@
 # parse_check_app.sh
 #
 # Verificação leve do código do aplicativo em qualquer plataforma: roda
-# `swiftc -frontend -parse` em cada arquivo Swift de `App/DiscursoBiblico/` e
-# de `App/DiscursoBiblicoTests/`.
+# `swiftc -frontend -parse` em cada arquivo Swift de `App/DiscursoBiblico/`,
+# de `App/DiscursoBiblicoTests/` e de `App/DiscursoBiblicoUITests/`.
 #
 # O `-parse` faz apenas a análise sintática: não valida APIs do SwiftUI,
 # SwiftData, PDFKit ou UIKit (isso exige o Xcode no macOS), mas pega erros de
@@ -36,7 +36,7 @@ while IFS= read -r -d '' file; do
         cat /tmp/opencode/parse-check.err
         failures=$((failures + 1))
     fi
-done < <(find "$REPO_ROOT/App/DiscursoBiblico" "$REPO_ROOT/App/DiscursoBiblicoTests" -name '*.swift' -print0)
+done < <(find "$REPO_ROOT/App/DiscursoBiblico" "$REPO_ROOT/App/DiscursoBiblicoTests" "$REPO_ROOT/App/DiscursoBiblicoUITests" -name '*.swift' -print0)
 
 if [ "$failures" -gt 0 ]; then
     echo "==> $failures de $count arquivos com erro de sintaxe"
