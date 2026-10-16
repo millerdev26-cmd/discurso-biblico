@@ -14,17 +14,19 @@
 //
 //  Quatro cuidados que vieram de execuções reais no CI:
 //
-//  1. **Toque que "não chega".** No iOS 26 o `tap()` de um elemento tocável
-//     às vezes não produz efeito: o XCUITest sintetiza o evento no lugar certo
-//     e o aplicativo não reage (defeito conhecido das listas novas do SwiftUI
-//     com o XCUITest; o mesmo vale para as abas). Por isso todo toque
-//     importante passa por `tap(_:in:until:named:)`, que tenta pelo elemento,
-//     depois por coordenada e depois com pressão curta, parando assim que a
-//     tela esperada aparece — e registra no log qual tentativa funcionou.
-//  2. **A versão do Xcode acompanha o simulador.** O simulador instalado no
-//     runner é o iOS 26; testar com o Xcode 16.4 (SDK iOS 18) foi o que
-//     produziu os toques sem efeito na primeira rodada. O workflow seleciona
-//     o Xcode 26.x disponível.
+//  1. **Toque que "não chega".** No iOS 26 há relatos de `tap()` que não produz
+//     efeito em listas novas do SwiftUI e de abas que raramente respondem — e a
+//     primeira rodada deste projeto falhou exatamente assim. A causa daqui,
+//     porém, estava no aplicativo (um `simultaneousGesture` competindo com os
+//     links; ver decisão 24): removido o gesto, o toque normal funciona. Ainda
+//     assim todo toque importante passa por `tap(_:in:until:named:)`, que tenta
+//     pelo elemento, depois por coordenada e depois com pressão curta, parando
+//     assim que a tela esperada aparece — e registra no log qual tentativa
+//     funcionou.
+//  2. **A versão do Xcode acompanha o simulador.** O simulador do runner é o
+//     iOS 26; o workflow seleciona o Xcode 26.x instalado (o padrão do
+//     `macos-15` é o 16.4, SDK iOS 18), para compilar e testar na mesma
+//     geração.
 //  3. **Nada de adivinhar o tipo do elemento.** A mesma linha de uma `List`
 //     aparece como `button`, `cell` ou `staticText`; a busca olha os botões
 //     primeiro (as linhas com acessibilidade combinada aparecem assim) e usa
@@ -116,20 +118,35 @@ final class DiscursoBiblicoUITests: XCTestCase {
             tap(settings, in: app, until: { settingsDone.exists }, named: "abrir os ajustes"),
             "Os ajustes da apresentação não abriram."
         )
+        let sizeBefore = fontSizeLabel(in: app)
         capture(app, named: "06-ajustes-da-apresentacao")
         XCTAssertTrue(
             tap(settingsDone, in: app, until: { !settingsDone.exists && settings.exists }, named: "fechar os ajustes"),
             "Os ajustes da apresentação não fecharam."
         )
 
-        // 7. Texto maior.
+        // 7. Texto maior: dois toques e a conferência do tamanho nos ajustes.
         let bigger = app.buttons["Aumentar o texto"]
-        XCTAssertTrue(
-            tap(bigger, in: app, until: { bigger.exists && settings.exists }, named: "aumentar o texto"),
-            "O controle \"Aumentar o texto\" não apareceu."
-        )
-        tap(bigger, in: app, until: { bigger.exists && settings.exists }, named: "aumentar o texto de novo")
+        touch(bigger, in: app, named: "aumentar o texto")
+        touch(bigger, in: app, named: "aumentar o texto de novo")
         capture(app, named: "07-proferimento-texto-maior")
+
+        XCTAssertTrue(
+            tap(settings, in: app, until: { settingsDone.exists }, named: "reabrir os ajustes"),
+            "Os ajustes da apresentação não reabriram."
+        )
+        let sizeAfter = fontSizeLabel(in: app)
+        XCTAssertTrue(
+            tap(settingsDone, in: app, until: { !settingsDone.exists && settings.exists }, named: "fechar os ajustes de novo"),
+            "Os ajustes da apresentação não fecharam."
+        )
+        XCTAssertNotNil(sizeBefore, "Não foi possível ler o tamanho do texto nos ajustes da apresentação.")
+        XCTAssertNotNil(sizeAfter, "Não foi possível ler o tamanho do texto depois de aumentá-lo.")
+        XCTAssertNotEqual(
+            sizeBefore,
+            sizeAfter,
+            "Os toques em \"Aumentar o texto\" não mudaram o tamanho mostrado nos ajustes."
+        )
 
         // 8. Próximo tópico (o indicador passa de "Tópico 1 de …" para "2").
         let topicTwo = app.staticTexts.matching(
@@ -238,6 +255,27 @@ final class DiscursoBiblicoUITests: XCTestCase {
         capture(app, named: "falha-\(step)")
         print("[ci] \(step): nenhuma das tentativas de toque teve efeito.")
         return false
+    }
+
+    /// Toca uma vez, sem exigir que a tela mude.
+    ///
+    /// É o caso do "Aumentar o texto": o toque não troca de tela, então não há
+    /// o que esperar — a conferência é feita depois, pelo valor que os ajustes
+    /// mostram. O log registra o envio do toque.
+    private func touch(_ element: XCUIElement, in app: XCUIApplication, named step: String) {
+        XCTAssertTrue(
+            element.waitForExistence(timeout: longa),
+            "\(step): o elemento não apareceu na tela."
+        )
+        element.tap()
+        print("[ci] \(step): toque enviado.")
+    }
+
+    /// O valor do controle "Tamanho" nos ajustes da apresentação (ex.: "34 pt").
+    private func fontSizeLabel(in app: XCUIApplication) -> String? {
+        let slider = app.sliders["Tamanho"]
+        guard slider.waitForExistence(timeout: curta) else { return nil }
+        return slider.value as? String
     }
 
     /// Toca num ponto do meio da tela (usado para revelar os controles do

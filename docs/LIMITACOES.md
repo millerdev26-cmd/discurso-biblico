@@ -16,7 +16,7 @@ O alvo iOS foi escrito por completo e passou por:
   ligações de referências, armazenamento de arquivos, importação, backup e o
   conteúdo de exemplo dos testes de interface;
 - **compilação real e execução dos 86 testes de unidade no simulador**
-  (iPhone 16, iOS 26.2, Xcode 16.4), na nuvem, pelo workflow
+  (iPhone 16, iOS 26.2, Xcode 26.3), na nuvem, pelo workflow
   `.github/workflows/ios.yml` (GitHub Actions, runner macOS): a cada push,
   `xcodebuild build-for-testing` + `test-without-building` e o núcleo em
   Linux e macOS (169 testes em cada). O `xcresult` fica guardado como

@@ -30,7 +30,7 @@ total. O workflow extrai os anexos do `.xcresult`
 O app só cria conteúdo quando é iniciado com o argumento `-uiTestSeed`: um
 discurso com marcações de orador, referências bíblicas, notas do apresentador e
 indicações, mais um material Markdown importado pela **via real** de importação
-( triagem → armazenamento → indexação). Sem o argumento, nada é criado — um
+(triagem → armazenamento → indexação). Sem o argumento, nada é criado — um
 usuário nunca vê conteúdo inventado pelo aplicativo.
 
 O arquivo foi dividido de propósito:
@@ -62,6 +62,23 @@ deles é usado pelo CI. A ressalva honesta está na seção 3d do
    por um teste rodando de verdade no simulador. É o mesmo motivo que fez a
    primeira compilação revelar 16 defeitos (decisão 17).
 
+2. **Tocar numa linha da lista não abria a tela.** É o defeito que esta fase
+   existe para encontrar. Cada `NavigationLink` das duas listas tinha um
+   `.simultaneousGesture(TapGesture())` para gravar a “última abertura”. No
+   iOS esse gesto **compete com o próprio link**: o toque registra o efeito
+   colateral e a navegação não acontece. Na primeira rodada dos testes de
+   interface (execução 38917807492) os dois testes falharam exatamente aí — a
+   linha era tocada e a tela não abria (no segundo teste, a captura do leitor
+   saiu idêntica à da biblioteca, byte a byte). O artefato dessa rodada
+   descartou crash, modal e coordenada errada: o toque sintetizado chegou ao
+   centro da linha (anexo “Synthesized Event”) e a árvore de acessibilidade
+   continuava igual 60 s depois. A correção (commit `8b1ab83`) tirou o gesto
+   dos links e passou o registro para a tela de detalhe e para o leitor — onde
+   a abertura de fato acontece. Com ela a suíte ficou verde (execução
+   38921600296) e as 12 capturas saíram. É o defeito mais valioso desta fase:
+   num toque de dedo o conflito de gestos é o mesmo, e o usuário sentiria
+   “toco no discurso e não abre”.
+
 ## Mudanças de verificação
 
 | Antes | Agora |
@@ -80,6 +97,11 @@ deles é usado pelo CI. A ressalva honesta está na seção 3d do
 | `Scripts/parse_check_app.sh` | **53 arquivos, 0 erros de sintaxe** |
 | `xcodebuild test` (runner macOS, simulador iPhone 16) | **86 testes de unidade + 2 de interface**, capturas no artefato `capturas-simulador` |
 
+Duas rodadas depois da correção, o CI também passou a escolher o **Xcode 26.x**
+do runner (mesma geração do simulador) e os testes de interface ganharam toques
+com tentativas (elemento → coordenada → pressão curta) e um anexo
+`falha-<passo>` por falha; ver decisão 24.
+
 ## Limitações desta fase
 
 - Os testes de interface cobrem **um caminho feliz por tela**; não cobrem
@@ -94,5 +116,5 @@ deles é usado pelo CI. A ressalva honesta está na seção 3d do
 
 Percorrer o checklist do `App/README.md` (seção 5) num Mac — ou num Mac
 alugado — começando pelo modo de proferimento (rolagem automática, retomada e
-medição dos tópicos), que é a parte mais delicate do aplicativo e a que nenhum
+medição dos tópicos), que é a parte mais delicada do aplicativo e a que nenhum
 teste automatizado mede hoje.

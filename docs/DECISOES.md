@@ -253,8 +253,9 @@ listado em [`LIMITACOES.md`](LIMITACOES.md) e no checklist do
   exportação).
 
 **Defeitos reais encontrados pela primeira compilação completa** (runner
-macOS do GitHub Actions, Xcode 16.4, simulador iPhone 16 — nenhum deles
-aparecia na análise sintática):
+macOS do GitHub Actions, Xcode 16.4 — o padrão do runner na época; hoje o CI
+escolhe o Xcode 26.x, decisão 24 —, simulador iPhone 16: nenhum deles aparecia
+na análise sintática):
 
 - `TEST_HOST` apontava para `DiscursoBiblico.app`, mas o produto era
   “Discurso Biblico.app” (`PRODUCT_NAME` com espaço): o alvo de testes não
@@ -368,11 +369,13 @@ padrão (decisão 23).
 repositório público, 9 rodadas de CI até o verde. A primeira compilação real
 encontrou **16 defeitos** que a análise sintática não via — inclusive dois de
 **lógica** que só a execução revelava (marcações em linha saindo sem acentos e
-a nota do apresentador) —, todos listados na decisão 17; a primeira rodada de
-testes de interface encontrou mais um, na decisão 22. Estado final do CI:
-núcleo com 169 testes em Linux e macOS, aplicativo compilado e **86 testes de
-unidade + 2 de interface passando no simulador** (iPhone 16, Xcode 16.4), com
-o `xcresult` e as capturas de tela guardados como artefato.
+a nota do apresentador) —, todos listados na decisão 17; os testes do conteúdo
+de exemplo e a primeira rodada de testes de interface encontraram mais dois
+(o nome canônico do livro, decisão 22, e o `simultaneousGesture` que competia
+com os links das listas, decisão 24). Estado final do CI: núcleo com 169 testes
+em Linux e macOS, aplicativo compilado e **86 testes de unidade + 2 de
+interface verdes no simulador** (iPhone 16, iOS 26.2), com as 12 capturas de
+tela e o `xcresult` guardados como artefato.
 
 **Consequência.** O que a nuvem **não** cobre continua sendo a verificação na
 tela (simulador interativo/aparelho): permanece no checklist do
@@ -420,7 +423,7 @@ esse caminho e continua no XcodeGen + `xcodebuild`.
 **Por quê.** Sem Mac, as três saídas são: nuvem (valida compilação e testes, de
 graça), Mac alugado (dá a tela) e xtool (compila e **instala** no aparelho).
 Deixar o manifesto pronto significa que o passo “instalar no iPhone” não
-depende de adaptation: só falta ter o `Xcode.xip` e a conta Apple.
+depende de adaptação: só falta ter o `Xcode.xip` e a conta Apple.
 
 **Consequência — leia antes de usar.** O xtool **não** dispensa o SDK da
 Apple: ele extrai o SDK do `Xcode.xip` (~10 GB), cujo licenciamento é da Apple
@@ -430,38 +433,54 @@ pelo xtool ainda não foi executada** — o que foi conferido foi o formato dos
 arquivos (`swift package describe` sem erros e o schema do `xtool.yml`). Para
 validar compilação e testes, use a nuvem.
 
-## 24. Testes de interface: Xcode na mesma geração do simulador e toques com três estratégias
+## 24. Testes de interface: o defeito era o gesto da linha; CI com o Xcode da mesma geração
 
-**Decisão.** O workflow escolhe o **Xcode 26.x** mais novo instalado no runner
-(o padrão do `macos-15` é o 16.4) antes de gerar o projeto. E os testes de
-interface tocam por **três estratégias** — toque pelo elemento, toque real por
-coordenada e toque com pressão curta —, parando na primeira que faz a tela
-esperada aparecer; quando nenhuma funciona, o passo guarda `falha-<passo>`
-(captura + árvore de acessibilidade) no artefato do CI.
+**Decisão.** Três mudanças que vieram da primeira rodada dos testes de
+interface:
 
-**Por quê.** A primeira rodada dos testes de interface (execução 38917807492)
-falhou nos dois testes: a linha do discurso e a linha da biblioteca eram
-tocadas e **nada acontecia na tela**, e a aba "Ajustes" falhava com
-`kAXErrorCannotComplete`. O artefato dessa execução permitiu descartar defeito
-do aplicativo e apontar o ambiente:
+1. **Aplicativo (a correção de verdade).** Os `NavigationLink` das duas listas
+   perderam o `.simultaneousGesture(TapGesture())` que registrava a "última
+   abertura". O registro passou para onde a abertura de fato acontece — a tela
+   de detalhe, para o discurso, e o leitor, para o material (commit `8b1ab83`).
+2. **CI.** O workflow escolhe o **Xcode 26.x** mais novo instalado no runner
+   (o padrão do `macos-15` é o 16.4, SDK iOS 18) antes de gerar o projeto, para
+   ficar na mesma geração do simulador iOS 26.
+3. **Testes.** Cada passo ancora numa verificação real (o editor fecha e o
+   detalhe volta, o leitor abre pelo botão "Sumário", o indicador passa para
+   "Tópico 2 de 4", o tamanho do texto cresce no controle "Tamanho" dos
+   ajustes), toca por três estratégias — elemento, coordenada e pressão
+   curta — parando na primeira que faz a tela esperada aparecer, e guarda
+   `falha-<passo>` (captura + árvore de acessibilidade) no artefato do CI
+   quando nenhuma funciona.
 
-- o evento sintetizado chegou exatamente no centro da linha (anexo
-  "Synthesized Event": toque em (195,3; 464,8), dentro do quadro
-  `{16, 406} × {361, 116,7}`) e a árvore de acessibilidade continuava idêntica
-  60 s depois — sem crash, sem troca de pid, sem modal cobrindo a tela;
-- os mesmos toques sintetizados **funcionaram** na barra de abas e na barra de
-  navegação (`Importar material`, `Biblioteca`), então o app estava recebendo e
-  tratando toques;
-- o log de versões mostrou `Xcode 16.4` (SDK iOS 18) contra
-  `{ platform:iOS Simulator, OS:26.2 }`: o XCUITest de uma geração testando o
-  sistema de duas gerações à frente. No iOS 26 esse descompasso é conhecido por
-  produzir exatamente esse sintoma ("toca e não acontece nada"; abas que
-  raramente respondem) e o remédio prático é o toque por coordenada.
+**Por quê — e onde a primeira investigação errou.** A rodada 38917807492
+falhou nos dois testes: tocar na linha do discurso e na linha da biblioteca não
+abria nada, e a aba "Ajustes" falhava com `kAXErrorCannotComplete`. O artefato
+mostrou que o toque sintetizado chegou ao centro exato da linha (anexo
+"Synthesized Event": (195,3; 464,8), dentro do quadro `{16,406}×{361,116,7}`),
+que a árvore de acessibilidade continuava idêntica 60 s depois, que não houve
+crash (mesmo pid), que nenhum modal cobria a tela — e que os mesmos toques
+**funcionaram** na barra de abas e na barra de navegação (`Importar material`,
+`Biblioteca`). A conclusão provisória foi "ambiente" (Xcode 16.4 contra o
+simulador iOS 26.2). **Era o aplicativo.** O defeito estava no
+`.simultaneousGesture` de cada link: no iOS o gesto compete com o
+`NavigationLink`, e o toque registra o efeito colateral sem navegar. Num toque
+de dedo o mesmo conflito de gestos está em jogo — o CI pegou, na prática, o
+sintoma que o usuário descreveria como "toco no discurso e não abre". Removido
+o gesto, os testes passaram até com o `.tap()` simples (execução 38921600296,
+verde, com as **12 capturas**).
 
-**Consequência.** Com o Xcode 26 o aplicativo passa a ser compilado com o SDK
-do iOS 26 e as capturas mostram a aparência do iOS 26 (é também o sistema dos
-aparelhos do autor). O `macos-15` já traz Xcode 26.3/26.2/26.1.1/26.0.1
-instalados — o passo novo escolhe o mais novo disponível e imprime a lista e
-os simuladores, para o dia em que a imagem do runner mudar. Se um dia o
-`Xcode 26.x` não existir, o script mantém o padrão do runner (e a rodada de
-testes de interface tende a falhar como falhou aqui — o motivo fica registrado).
+O descompasso de versões, porém, era real mesmo sem ser a causa: compilar com
+o SDK do iOS 18 e testar no iOS 26 mistura gerações. Com o Xcode 26.x no CI,
+compilação, biblioteca de testes e simulador ficam alinhados (é a geração dos
+aparelhos do autor) e as capturas passam a mostrar a aparência do iOS 26. O
+`macos-15` já traz 26.3/26.2/26.1.1/26.0.1 instalados; o passo novo escolhe o
+mais novo e imprime a lista de Xcodes, runtimes e simuladores, para o dia em
+que a imagem do runner mudar. Com o **Xcode 26.3** a rodada 38923425128 ficou
+verde — e todos os toques passaram pela estratégia normal (elemento),
+confirmando de novo que a causa era o gesto, não o ambiente.
+
+As três estratégias de toque ficam como cinto de segurança: no iOS 26 há
+relatos de toques que "não fazem nada" e de abas que raramente respondem. Com o
+gesto removido o toque normal funciona; as outras duas só entram se o primeiro
+não surtir efeito, e o log do CI diz qual foi usada.

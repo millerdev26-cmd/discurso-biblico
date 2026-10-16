@@ -14,9 +14,8 @@ explica **como gerar o projeto, rodar os testes e o que verificar** no Mac.
 ## 1. Requisitos
 
 - macOS com **Xcode 26** (ou 16.4+; o alvo usa `SWIFT_VERSION 5.0` e
-  implantação iOS 17). Nos testes de interface, use um Xcode da mesma geração
-  do simulador: no CI, o Xcode 16.4 (SDK iOS 18) contra um simulador iOS 26
-  fazia os toques do XCUITest não chegarem ao aplicativo (decisão 23).
+  implantação iOS 17). O CI escolhe o Xcode da mesma geração do simulador
+  (decisão 24); localmente, qualquer Xcode que compile o alvo serve.
 - [XcodeGen](https://github.com/yonaskolb/XcodeGen) via Homebrew (opcional;
   sem ele dá para criar o projeto à mão em 4 passos).
 - Simulador iOS 17+ ou um iPhone/iPad.
@@ -67,8 +66,8 @@ O repositório inclui o workflow [`.github/workflows/ios.yml`](../.github/workfl
 A cada push, num runner macOS do GitHub Actions, ele:
 
 1. escolhe o **Xcode 26.x** instalado no runner (o padrão do `macos-15` é o
-   16.4, cujo SDK é o iOS 18 — mistura que quebra os toques do XCUITest no
-   simulador iOS 26; ver decisão 23 em `docs/DECISOES.md`);
+   16.4, cujo SDK é o iOS 18 — o CI fica na mesma geração do simulador iOS 26;
+   ver decisão 24 em `docs/DECISOES.md`);
 2. instala o XcodeGen e gera o projeto a partir de `project.yml`;
 3. compila o aplicativo para o simulador (`build-for-testing`);
 4. executa **todos** os testes de unidade — inclusive os 27+ de
@@ -86,17 +85,19 @@ com marcações, referências bíblicas, notas e indicações, além de um mater
 Markdown indexado na biblioteca. No uso normal nada é criado sozinho.
 
 **Resultado neste repositório** (`millerdev26-cmd/discurso-biblico`, isolado,
-`Actions ▸ iOS`): aplicativo compilado e **86 testes de unidade** verdes no
-simulador (iPhone 16, iOS 26.2), mais os **2 testes de interface** que geram as
-capturas; núcleo com **169 testes** em Linux e macOS e **59 testes** da lógica
-do app rodando em Linux (`Scripts/verify_app_logic.sh`). A primeira compilação
-real encontrou 16 defeitos que a análise sintática não via — inclusive dois de
+`Actions ▸ iOS`): aplicativo compilado e **86 testes de unidade + 2 de
+interface** verdes no simulador (iPhone 16, iOS 26.2), com as **12 capturas de
+tela** publicadas no artefato `capturas-simulador` (execução 38921600296);
+núcleo com **169 testes** em Linux e macOS e **59 testes** da lógica do app
+rodando em Linux (`Scripts/verify_app_logic.sh`). A primeira compilação real
+encontrou 16 defeitos que a análise sintática não via — inclusive dois de
 lógica —, todos listados na decisão 17 de
 [`docs/DECISOES.md`](../docs/DECISOES.md); os testes do conteúdo de exemplo e a
 primeira rodada de testes de interface encontraram mais dois: o nome canônico
-do livro ("Salmos", não "Salmo"; decisão 22) e o descompasso entre a versão do
-Xcode e a do simulador, que impedia os toques de chegarem ao aplicativo
-(decisão 23).
+do livro ("Salmos", não "Salmo"; decisão 22) e o `simultaneousGesture` que
+competia com os links das listas e fazia o toque não abrir a tela (decisão 24)
+— este último é o tipo de defeito que só aparece com o aplicativo rodando de
+verdade.
 
 Para publicar uma cópia nova (passos já executados aqui):
 
