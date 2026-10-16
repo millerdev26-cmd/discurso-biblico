@@ -85,4 +85,24 @@ final class DemoSeedTests: XCTestCase {
         XCTAssertTrue(DemoSeed.markdown.contains("Anotações de estudo"))
         XCTAssertTrue(DemoSeed.markdown.contains("João 3:16"))
     }
+
+    func testMaterialDeExemploUsaTudoQueOLeitorPrecisaMostrar() {
+        // O exemplo existe para as capturas de tela mostrarem o leitor
+        // funcionando: título, lista com marcador, lista numerada, citação e
+        // ênfase. Sem eles, a captura mostraria só parágrafos.
+        let blocks = MarkdownBlocks.parse(DemoSeed.markdown)
+        let kinds = Set(blocks.map(\.kind))
+
+        XCTAssertTrue(kinds.contains(.heading), "O exemplo precisa de títulos.")
+        XCTAssertTrue(kinds.contains(.listItem), "O exemplo precisa de listas.")
+        XCTAssertTrue(kinds.contains(.quote), "O exemplo precisa de uma citação.")
+        XCTAssertTrue(
+            blocks.contains { if case .listItem(.number, _) = $0 { true } else { false } },
+            "O exemplo precisa de uma lista numerada."
+        )
+        XCTAssertFalse(
+            MarkdownBlocks.plainText(from: blocks).contains("#"),
+            "A marcação de título vazou para o texto lido."
+        )
+    }
 }

@@ -30,6 +30,8 @@ struct LibraryReaderView: View {
     @State private var pdfDocument: PDFDocument?
     @State private var epubBook: EPUBBook?
     @State private var plainText: String?
+    /// Markdown interpretado em blocos (título, parágrafo, lista, citação).
+    @State private var markdownBlocks: [MarkdownBlock]?
     @State private var chapterIndex = 0
     @State private var currentPageIndex = 0
     @State private var loadErrorMessage: String?
@@ -142,6 +144,8 @@ struct LibraryReaderView: View {
                 .environment(\.colorScheme, theme.colorScheme ?? .light)
         } else if let plainText {
             textReader(plainText)
+        } else if let markdownBlocks {
+            markdownReader(markdownBlocks)
         } else {
             ContentUnavailableView {
                 Label("Formato sem leitura interna", systemImage: "questionmark.square.dashed")
@@ -259,6 +263,109 @@ struct LibraryReaderView: View {
             .id(paragraph.offset)
     }
 
+    // MARK: Markdown
+
+    /// Leitor de Markdown: cada bloco do arquivo aparece com a formatação que
+    /// ele tem (título grande, item de lista com marcador, citação recuada,
+    /// código em monoespaçada). É o oposto de mostrar "#" e "-" na tela.
+    private func markdownReader(_ blocks: [MarkdownBlock]) -> some View {
+        ScrollViewReader { proxy in
+            ScrollView {
+                LazyVStack(alignment: .leading, spacing: 12) {
+                    ForEach(Array(blocks.enumerated()), id: \.offset) { index, block in
+                        markdownBlockView(block)
+                            .id(index)
+                    }
+                }
+                .padding(.horizontal, 18)
+                .padding(.vertical, 16)
+                .frame(maxWidth: 760, alignment: .leading)
+                .frame(maxWidth: .infinity)
+            }
+            .background(theme.background)
+            .onAppear {
+                if let offset = initialLocator?.characterOffset, offset > 0 {
+                    proxy.scrollTo(offset, anchor: .top)
+                } else if let saved = currentItem.lastReadPosition?.characterOffset, saved > 0 {
+                    proxy.scrollTo(saved, anchor: .top)
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func markdownBlockView(_ block: MarkdownBlock) -> some View {
+        switch block {
+        case .heading(let level, let text):
+            Text(text)
+                .font(.system(size: markdownHeadingSize(level), weight: .bold, design: readerFontDesign))
+                .foregroundStyle(theme.text)
+                .padding(.top, level <= 2 ? 10 : 4)
+                .padding(.bottom, 2)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .accessibilityAddTraits(.isHeader)
+
+        case .paragraph(let text):
+            Text(text)
+                .font(.system(size: readerFontSize, design: readerFontDesign))
+                .foregroundStyle(theme.text)
+                .lineSpacing(readerFontSize * 0.3)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+        case .listItem(let marker, let text):
+            HStack(alignment: .firstTextBaseline, spacing: 10) {
+                Text(marker.displayText)
+                    .font(.system(size: readerFontSize, design: readerFontDesign))
+                    .foregroundStyle(theme.text)
+                    .frame(minWidth: 22, alignment: marker == .bullet ? .leading : .trailing)
+                Text(text)
+                    .font(.system(size: readerFontSize, design: readerFontDesign))
+                    .foregroundStyle(theme.text)
+                    .lineSpacing(readerFontSize * 0.3)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+        case .quote(let text):
+            HStack(alignment: .top, spacing: 12) {
+                RoundedRectangle(cornerRadius: 2)
+                    .fill(theme.text.opacity(0.35))
+                    .frame(width: 4)
+                Text(text)
+                    .font(.system(size: readerFontSize, design: readerFontDesign))
+                    .italic()
+                    .foregroundStyle(theme.text)
+                    .lineSpacing(readerFontSize * 0.3)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.vertical, 4)
+
+        case .code(let code):
+            Text(code)
+                .font(.system(size: readerFontSize * 0.86, design: .monospaced))
+                .foregroundStyle(theme.text)
+                .lineSpacing(4)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(12)
+                .background(theme.text.opacity(0.08), in: RoundedRectangle(cornerRadius: 8))
+
+        case .rule:
+            Rectangle()
+                .fill(theme.text.opacity(0.25))
+                .frame(height: 1)
+                .padding(.vertical, 6)
+                .accessibilityHidden(true)
+        }
+    }
+
+    private func markdownHeadingSize(_ level: Int) -> Double {
+        switch level {
+        case 1: return readerFontSize * 1.55
+        case 2: return readerFontSize * 1.35
+        case 3: return readerFontSize * 1.18
+        default: return readerFontSize * 1.06
+        }
+    }
+
     // MARK: PDF
 
     private var pageIndicator: some View {
@@ -371,6 +478,7 @@ struct LibraryReaderView: View {
         pdfDocument = nil
         epubBook = nil
         plainText = nil
+        markdownBlocks = nil
         // Marca o material como aberto agora (a lista só lia a data; aqui é
         // que sabemos que ele foi realmente aberto).
         update { $0.lastOpenedAt = Date() }
@@ -417,7 +525,23 @@ struct LibraryReaderView: View {
             case .plainText, .markdown, .html:
                 let data = try await Self.readData(at: fileURL)
                 let raw = String(decoding: data, as: UTF8.self)
-                plainText = currentItem.kind == .html ? HTMLTextExtractor.plainText(from: raw) : raw
+                switch currentItem.kind {
+                case .html:
+                    plainText = HTMLTextExtractor.plainText(from: raw)
+                    markdownBlocks = nil
+                case .markdown:
+                    // Markdown é interpretado em blocos: o leitor mostra o
+                    // conteúdo com títulos e listas, não a marcação crua
+                    // ("# Título", "- item") na tela.
+                    let blocks = await Task.detached(priority: .userInitiated) {
+                        MarkdownBlocks.parse(raw)
+                    }.value
+                    markdownBlocks = blocks
+                    plainText = nil
+                default:
+                    plainText = raw
+                    markdownBlocks = nil
+                }
                 chapterIndex = initialLocator?.chapterIndex ?? 0
 
             case .unsupported:

@@ -138,5 +138,17 @@ enum DemoSeed {
 
     Preparação não é só escrever: é treinar a leitura em voz alta, marcar as
     pausas e voltar ao ponto de leitura na próxima vez.
+
+    > A esperança não depende das circunstâncias, mas de quem fez a promessa.
+
+    ### Antes de subir ao púlpito
+
+    - Releia o texto em voz alta, devagar.
+    - Confira as pausas marcadas no editor.
+    - Volte ao ponto em que parou, se for retomar.
+
+    1. Respire.
+    2. Comece pela introdução.
+    3. Guarde os minutos do final para o convite.
     """
 }

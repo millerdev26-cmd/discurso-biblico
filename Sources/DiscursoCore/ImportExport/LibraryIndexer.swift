@@ -325,7 +325,12 @@ public enum MarkdownPlainText {
         return output.joined(separator: "\n")
     }
 
-    private static func stripInline(_ text: String) -> String {
+    /// Remove só a marcação **dentro** da linha (ênfase, links, imagens,
+    /// código), sem mexer no começo da linha (títulos, listas, citações).
+    ///
+    /// Público porque o leitor Markdown (`MarkdownBlocks`) usa exatamente a
+    /// mesma regra: assim o texto indexado e o texto exibido não divergem.
+    public static func stripInline(_ text: String) -> String {
         var result = text
         // Imagens: ![alt](url) -> alt
         result = result.replacingOccurrences(
