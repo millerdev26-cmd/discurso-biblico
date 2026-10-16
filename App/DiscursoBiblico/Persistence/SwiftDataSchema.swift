@@ -46,17 +46,26 @@ final class SpeechRecord {
     @Attribute(.externalStorage) var payload: Data
 
     init(speech: Speech) {
+        let summary = SpeechSummary(speech: speech)
         self.id = speech.id
-        self.title = speech.displayTitle
-        self.subtitle = speech.subtitle
-        self.occasion = speech.occasion
-        self.folderID = speech.folderID
-        self.statusRaw = speech.status.rawValue
-        self.isFavorite = speech.isFavorite
+        self.title = summary.title
+        self.subtitle = summary.subtitle
+        self.occasion = summary.occasion
+        self.folderID = summary.folderID
+        self.statusRaw = summary.status.rawValue
+        self.isFavorite = summary.isFavorite
         self.createdAt = speech.createdAt
-        self.updatedAt = speech.updatedAt
+        self.updatedAt = summary.updatedAt
+        self.plannedMinutes = summary.plannedMinutes
+        self.sectionCount = summary.sectionCount
+        self.wordCount = summary.wordCount
+        self.estimatedMinutes = summary.estimatedMinutes
+        self.referenceCount = summary.referenceCount
+        self.sourceCount = summary.sourceCount
+        self.preparationProgress = summary.preparationProgress
+        self.lastReadSectionTitle = summary.lastReadSectionTitle
+        self.lastReadFraction = summary.lastReadFraction
         self.payload = PayloadCoding.encode(speech)
-        self.applyIndexColumns(speech)
     }
 
     /// Atualiza as colunas de índice a partir do modelo.

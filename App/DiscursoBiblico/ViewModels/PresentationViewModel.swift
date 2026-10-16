@@ -84,10 +84,11 @@ final class PresentationViewModel {
         self.speech = speech
         self.repository = repository
         self.autosave = autosave
-        self.preferences = speech.presentation.sanitized()
+        let sanitized = speech.presentation.sanitized()
+        self.preferences = sanitized
         self.session = PresentationSession(
             speechID: speech.id,
-            preferences: self.preferences
+            preferences: sanitized
         )
         rebuildText()
     }
